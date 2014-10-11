@@ -1,0 +1,74 @@
+﻿@model IISProjektas.Models.UserRegisterModel
+@{
+    ViewBag.Title = "Registracija";
+}
+
+
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1></br>
+    <h2>Sukurti naują vartotoją.</h2>
+</hgroup>
+
+@if (ViewBag.Message != null)
+{
+    <div style="color:green">
+        @ViewBag.Message
+        @Html.ActionLink("Prisijungti", "Login", "User");
+
+    </div>
+}
+
+@if (ViewBag.Error != null)
+{
+    <div style="color:red">
+        @ViewBag.Error
+        
+
+    </div>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    
+    
+
+    <fieldset>
+        <legend>Registration Form</legend>
+        <ol>
+            <li>
+                @Html.LabelFor(x => x.username)
+                @Html.TextBoxFor(m => m.username)
+                @Html.ValidationMessageFor(model => model.username)
+            </li>
+
+            <li>
+                @Html.LabelFor(x => x.email)
+                @Html.TextBoxFor(x => x.email)
+                @Html.ValidationMessageFor(model => model.email)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.password)
+                @Html.PasswordFor(m => m.password)
+                @Html.ValidationMessageFor(model => model.password)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.confirmPassword)
+                @Html.PasswordFor(m => m.confirmPassword)
+                @Html.ValidationMessageFor(model => model.confirmPassword)
+            </li>
+        </ol>
+        <input type="submit" value="Register" />
+        <span class="Back_button">
+            @Html.ActionLink("Atgal", "Index", "Home")
+
+        </span>
+    </fieldset>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

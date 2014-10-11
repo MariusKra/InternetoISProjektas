@@ -1,0 +1,48 @@
+﻿@model IISProjektas.Models.UserLoginModel
+
+@{
+    ViewBag.Title = "Prisijungimas";
+}
+
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+<section id="loginForm">
+    <h2>Use a local account to log in.</h2>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <legend>Log in Form</legend>
+            <ol>
+                <li>
+                    @Html.LabelFor(x => x.username)
+                    @Html.TextBoxFor(x => x.username)
+                    @Html.ValidationMessageFor(x => x.username)
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.password)
+                    @Html.PasswordFor(m => m.password)
+                    @Html.ValidationMessageFor(m => m.password)
+                </li>
+                <li>
+                    @Html.CheckBoxFor(m => m.RememberMe)
+                    @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
+                </li>
+            </ol>
+            <input type="submit" value="Log in" />
+        </fieldset>
+        <p>
+            @Html.ActionLink("Registracija", "Register") jei nesate susikūrę vartotojo.
+        </p>
+    }
+</section>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
