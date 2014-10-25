@@ -138,4 +138,19 @@
   <data name="username" xml:space="preserve">
     <value>Vartotojo vardas</value>
   </data>
+  <data name="userPermissions" xml:space="preserve">
+    <value>Vartotojo teisės</value>
+  </data>
+  <data name="userState" xml:space="preserve">
+    <value>Vartotojo būsena</value>
+  </data>
+  <data name="AdAuthor" xml:space="preserve">
+    <value>Skelbimo autorius</value>
+  </data>
+  <data name="AdCategory" xml:space="preserve">
+    <value>Skelbimo kategorija</value>
+  </data>
+  <data name="AdName" xml:space="preserve">
+    <value>Skelbimo pavadinimas</value>
+  </data>
 </root>

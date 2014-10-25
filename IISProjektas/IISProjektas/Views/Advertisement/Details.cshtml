@@ -1,0 +1,43 @@
+﻿@model IISProjektas.Advertisement
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Advertisement</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.name)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.name)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.description)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.description)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Category.name)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Category.name)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.User.username)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.User.username)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

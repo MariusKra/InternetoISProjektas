@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Mano skelbimai";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+
+
+@Html.ActionLink("Sukurti naują skelbimą", "Create")
+
+
+
+
+<script type="text/javascript">
+    document.getElementById("clickme").addEventListener("click", function (event) {
+        // display the current click count inside the clicked div
+        event.target.innerHTML = "click count: " + event.detail;
+    }, false);
+
+
+</script>

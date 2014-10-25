@@ -19,7 +19,7 @@ namespace IISProjektas
         public int advertisement_id { get; set; }
         public int user_id { get; set; }
     
-        public virtual Advertisement Advertisement { get; set; }
         public virtual User User { get; set; }
+        public virtual Advertisement Advertisement { get; set; }
     }
 }

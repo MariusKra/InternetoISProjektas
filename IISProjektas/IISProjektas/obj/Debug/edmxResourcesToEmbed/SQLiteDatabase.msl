@@ -1,18 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="SQLiteDatabaseStoreContainer" CdmEntityContainer="Entities">
-    <EntitySetMapping Name="Advertisements">
-      <EntityTypeMapping TypeName="SQLiteDatabase.Advertisement">
-        <MappingFragment StoreEntitySet="Advertisement">
-          <ScalarProperty Name="image" ColumnName="image" />
-          <ScalarProperty Name="user_id" ColumnName="user_id" />
-          <ScalarProperty Name="category_id" ColumnName="category_id" />
-          <ScalarProperty Name="description" ColumnName="description" />
-          <ScalarProperty Name="name" ColumnName="name" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Categories">
       <EntityTypeMapping TypeName="SQLiteDatabase.Category">
         <MappingFragment StoreEntitySet="Category">
@@ -59,17 +47,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Users">
-      <EntityTypeMapping TypeName="SQLiteDatabase.User">
-        <MappingFragment StoreEntitySet="User">
-          <ScalarProperty Name="state" ColumnName="state" />
-          <ScalarProperty Name="password" ColumnName="password" />
-          <ScalarProperty Name="email" ColumnName="email" />
-          <ScalarProperty Name="username" ColumnName="username" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="User_UserGroup">
       <EntityTypeMapping TypeName="SQLiteDatabase.User_UserGroup">
         <MappingFragment StoreEntitySet="User_UserGroup">
@@ -91,6 +68,29 @@
     <EntitySetMapping Name="UserStates">
       <EntityTypeMapping TypeName="SQLiteDatabase.UserState">
         <MappingFragment StoreEntitySet="UserState">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="SQLiteDatabase.User">
+        <MappingFragment StoreEntitySet="User">
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Advertisements">
+      <EntityTypeMapping TypeName="SQLiteDatabase.Advertisement">
+        <MappingFragment StoreEntitySet="Advertisement">
+          <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="category_id" ColumnName="category_id" />
+          <ScalarProperty Name="description" ColumnName="description" />
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>

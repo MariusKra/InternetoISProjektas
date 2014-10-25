@@ -9,7 +9,7 @@
     <Property Name="description" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="category_id" Type="int" Nullable="false" />
     <Property Name="user_id" Type="int" Nullable="false" />
-    <Property Name="image" Type="image" />
+    <Property Name="Image" Type="nvarchar" MaxLength="100" />
   </EntityType>
   <EntityType Name="Category">
     <Key>
@@ -60,7 +60,7 @@
     <Property Name="username" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="email" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="password" Type="nvarchar" MaxLength="100" Nullable="false" />
-    <Property Name="state" Type="int" />
+    <Property Name="state" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="User_UserGroup">
     <Key>
@@ -194,7 +194,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_User_UserState">
-    <End Role="UserState" Type="Self.UserState" Multiplicity="0..1" />
+    <End Role="UserState" Type="Self.UserState" Multiplicity="1" />
     <End Role="User" Type="Self.User" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="UserState">

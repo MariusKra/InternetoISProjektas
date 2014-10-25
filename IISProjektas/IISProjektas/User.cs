@@ -16,24 +16,24 @@ namespace IISProjektas
     {
         public User()
         {
-            this.Advertisements = new HashSet<Advertisement>();
             this.Comments = new HashSet<Comment>();
             this.Messages = new HashSet<Message>();
             this.Messages1 = new HashSet<Message>();
             this.User_UserGroup = new HashSet<User_UserGroup>();
+            this.Advertisements = new HashSet<Advertisement>();
         }
     
         public int Id { get; set; }
         public string username { get; set; }
         public string email { get; set; }
         public string password { get; set; }
-        public Nullable<int> state { get; set; }
+        public int state { get; set; }
     
-        public virtual ICollection<Advertisement> Advertisements { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Message> Messages { get; set; }
         public virtual ICollection<Message> Messages1 { get; set; }
         public virtual ICollection<User_UserGroup> User_UserGroup { get; set; }
         public virtual UserState UserState { get; set; }
+        public virtual ICollection<Advertisement> Advertisements { get; set; }
     }
 }

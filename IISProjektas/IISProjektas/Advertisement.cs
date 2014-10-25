@@ -25,7 +25,7 @@ namespace IISProjektas
         public string description { get; set; }
         public int category_id { get; set; }
         public int user_id { get; set; }
-        public byte[] image { get; set; }
+        public string Image { get; set; }
     
         public virtual Category Category { get; set; }
         public virtual User User { get; set; }

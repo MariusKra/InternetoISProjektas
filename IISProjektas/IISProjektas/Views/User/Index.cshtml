@@ -1,36 +1,16 @@
-﻿@model IEnumerable<IISProjektas.User> 
+﻿@model IEnumerable<IISProjektas.Models.UserModel>
 
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = "Vartodojų administravimas";
 }
 
 <hgroup class="title">
    
-    <h2>Create a new account.</h2>
+    <h2>Vartotojų sąrašas.</h2>
 </hgroup>
-<h2>Index</h2>
-@*
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+
 <table>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.username)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.password)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.)
-        </th>
-        <th></th>
-    </tr>
-    *@
-@foreach (var item in Model) {
+@foreach(var item in Model) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.username)
@@ -42,14 +22,19 @@
             @Html.DisplayFor(modelItem => item.password)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.UserState.name)
+            @Html.DisplayFor(modelItem => item.stateText, new { @disabled = "disabled" })
         </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.permissionsText, new { @disabled = "disabled" })
+        </td>
+        
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
             @Html.ActionLink("Details", "Details", new { id=item.Id }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.Id })
         </td>
     </tr>
+    
 }
 
 </table>

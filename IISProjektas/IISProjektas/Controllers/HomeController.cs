@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using IISProjektas.Models;
 
 namespace IISProjektas.Controllers
 {
@@ -19,21 +20,44 @@ namespace IISProjektas.Controllers
             }
             ViewBag.off = offices;
             */
+
+
+
+
+
+
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult MyAds()
         {
-            ViewBag.Message = "Your app description page.";
+            ViewBag.Message = "";
 
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult Messages()
         {
             ViewBag.Message = "Your contact page.";
 
             return View();
         }
+
+        public ActionResult Create()
+        {
+
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CreateAdvertisement(AdvertisementCreateModel model)
+        {
+
+
+
+            return View();
+        }
+
     }
 }

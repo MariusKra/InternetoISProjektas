@@ -25,15 +25,15 @@ namespace IISProjektas
             throw new UnintentionalCodeFirstException();
         }
     
-        public DbSet<Advertisement> Advertisements { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<MessageState> MessageStates { get; set; }
         public DbSet<Rating> Ratings { get; set; }
-        public DbSet<User> Users { get; set; }
         public DbSet<User_UserGroup> User_UserGroup { get; set; }
         public DbSet<UserGroup> UserGroups { get; set; }
         public DbSet<UserState> UserStates { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Advertisement> Advertisements { get; set; }
     }
 }

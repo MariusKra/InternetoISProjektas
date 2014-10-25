@@ -13,7 +13,7 @@ namespace IISProjektas.Models
         [HiddenInput]
         public int Id { get; set; }
 
-        [ReadOnly(true)]
+        //[ReadOnly(true)]
         [Display(Name = "username", ResourceType = typeof(IISProjektas.Resources))]
         [StringLength(100, ErrorMessage = "{0} turi būti bent {2} simbolių ilgio.", MinimumLength = 6)]
         public string username { get; set; }
@@ -46,6 +46,16 @@ namespace IISProjektas.Models
         [DataType(DataType.Password)]
         [Compare("newPassword", ErrorMessage = "Slaptažodžiai nesutampa")]
         public string confirmNewPassword { get; set; }
+
+        [Display(Name = "userState", ResourceType = typeof(IISProjektas.Resources))]
+        public int state { get; set; }
+
+        [Display(Name = "userPermissions", ResourceType = typeof(IISProjektas.Resources))]
+        public int permissions { get; set; }
+      
+        public IEnumerable<SelectListItem> stateDropDown { get; set; }
+        public IEnumerable<SelectListItem> groupDropDown { get; set; }
+
 
     }
 }

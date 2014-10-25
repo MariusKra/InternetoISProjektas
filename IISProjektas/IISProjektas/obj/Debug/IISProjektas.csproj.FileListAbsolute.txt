@@ -16,13 +16,10 @@ C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\Microsoft.Web.Mvc.Fi
 C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\Microsoft.Web.WebPages.OAuth.dll
 C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\Newtonsoft.Json.dll
 C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\System.Net.Http.dll
-C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\System.Net.Http.Formatting.dll
 C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\System.Net.Http.WebRequest.dll
 C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\System.Spatial.dll
 C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\System.Web.Helpers.dll
-C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\System.Web.Http.dll
 C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\System.Web.Http.OData.dll
-C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\System.Web.Http.WebHost.dll
 C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\System.Web.Mvc.dll
 C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\System.Web.Optimization.dll
 C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\System.Web.Razor.dll
@@ -35,11 +32,8 @@ C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\WebMatrix.WebData.dl
 C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\EntityFramework.xml
 C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\Newtonsoft.Json.xml
 C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\System.Net.Http.xml
-C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\System.Net.Http.Formatting.xml
 C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\System.Net.Http.WebRequest.xml
 C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\System.Web.Helpers.xml
-C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\System.Web.Http.xml
-C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\System.Web.Http.WebHost.xml
 C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\System.Web.Mvc.xml
 C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\System.Web.Razor.xml
 C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\System.Web.WebPages.xml

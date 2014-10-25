@@ -18,7 +18,7 @@ namespace IISProjektas
         public int user_id { get; set; }
         public int user_group_id { get; set; }
     
-        public virtual User User { get; set; }
         public virtual UserGroup UserGroup { get; set; }
+        public virtual User User { get; set; }
     }
 }

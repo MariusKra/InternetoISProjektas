@@ -61,6 +61,33 @@ namespace IISProjektas {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Skelbimo autorius.
+        /// </summary>
+        public static string AdAuthor {
+            get {
+                return ResourceManager.GetString("AdAuthor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skelbimo kategorija.
+        /// </summary>
+        public static string AdCategory {
+            get {
+                return ResourceManager.GetString("AdCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skelbimo pavadinimas.
+        /// </summary>
+        public static string AdName {
+            get {
+                return ResourceManager.GetString("AdName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Patvirtinkite naują slaptažodį.
         /// </summary>
         public static string confirmNewPassword {
@@ -120,6 +147,24 @@ namespace IISProjektas {
         public static string username {
             get {
                 return ResourceManager.GetString("username", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vartotojo teisės.
+        /// </summary>
+        public static string userPermissions {
+            get {
+                return ResourceManager.GetString("userPermissions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vartotojo būsena.
+        /// </summary>
+        public static string userState {
+            get {
+                return ResourceManager.GetString("userState", resourceCulture);
             }
         }
     }

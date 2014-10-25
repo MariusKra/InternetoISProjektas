@@ -10,6 +10,15 @@ using System.Web.Mvc;
 
 namespace IISProjektas.Controllers
 {
+    public enum Permission
+    {
+        User = 1,
+        Administrator = 2,
+        SuperAdministrator = 3
+    };
+ 
+
+
     public class UserController : Controller
     {
         private Entities db = new Entities();
@@ -19,8 +28,21 @@ namespace IISProjektas.Controllers
 
         public ActionResult Index()
         {
-            var users = db.Users.Include(u => u.UserState);
-            return View(users.ToList());
+            //var users = db.Users.Include(u => u.UserState);
+            var users = db.Users.Select(x => new UserModel()
+            {
+                Id = x.Id,
+                email = x.email,
+                //password = x.password,
+                permissionsText = db.User_UserGroup.Where(z => z.user_id == x.Id).FirstOrDefault().UserGroup.name,
+                stateText = x.UserState.name,
+                username = x.username
+                
+            });
+
+            IEnumerable<UserModel> list = users.ToList();
+           
+            return View(list);
         }
 
                 //
@@ -69,12 +91,38 @@ namespace IISProjektas.Controllers
         public ActionResult Edit(int id = 0)
         {
             User user = db.Users.Find(id);
+
+
+
             if (user == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.state = new SelectList(db.UserStates, "Id", "name", user.state);
-            return View(user);
+            UserEditModel model = new UserEditModel()
+            {
+                Id = user.Id,
+                email = user.email,                
+                state = user.state,
+                username = user.username,
+                password = user.password,
+                oldPassword = user.password,
+                permissions = db.User_UserGroup.Where(z => z.user_id == user.Id).FirstOrDefault().UserGroup.Id,
+                stateDropDown = db.UserStates.ToList()
+                .Select(z => new SelectListItem()
+                {
+                    Text = z.name,
+                    Value = z.Id.ToString()
+                }).ToList(),
+                groupDropDown = db.UserGroups.ToList().Select(z => new SelectListItem()
+                {
+                    Text = z.name,
+                    Value = z.Id.ToString()
+                }).ToList(),
+
+            };
+            
+
+            return View(model);
         }
 
         //
@@ -82,16 +130,25 @@ namespace IISProjektas.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(User user)
+        public ActionResult Edit(UserEditModel model)
         {
             if (ModelState.IsValid)
             {
+                User user = db.Users.Find(model.Id);
+                user.email = model.email;
+                user.password = model.password;
+                user.state = model.state;
+                User_UserGroup group = db.User_UserGroup.Where(x => x.user_id == model.Id).FirstOrDefault();
+                group.UserGroup = db.UserGroups.Where(x => x.Id == model.permissions).FirstOrDefault();
+
+                db.Entry(group).State = EntityState.Modified;
+                db.SaveChanges();
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.state = new SelectList(db.UserStates, "Id", "name", user.state);
-            return View(user);
+            
+            return View(model);
         }
 
 
@@ -135,7 +192,16 @@ namespace IISProjektas.Controllers
 
                     };
 
+                    User_UserGroup user_group = new User_UserGroup()
+                    {
+                        User = user,
+                        UserGroup = db.UserGroups.Where(x => x.Id == 1).FirstOrDefault()
+                    };
+                   
+
                     db.Users.Add(user);
+                    db.SaveChanges();
+                    db.User_UserGroup.Add(user_group);
                     db.SaveChanges();
                     ModelState.Clear();
                     U = null;
@@ -165,6 +231,8 @@ namespace IISProjektas.Controllers
                 {
                     Session["LogedUserID"] = v.Id.ToString();
                     Session["LogedUsername"] = v.username.ToString();
+                    User_UserGroup tmp = db.User_UserGroup.Where(x => x.User.Id == v.Id).FirstOrDefault();
+                    Session["Permissions"] = (int)db.UserGroups.Where(y => y.Id == tmp.UserGroup.Id).FirstOrDefault().Id;
                     return RedirectToAction("Index","Home");
                 }
                      

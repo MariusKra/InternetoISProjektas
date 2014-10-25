@@ -1,7 +1,7 @@
-﻿@model IISProjektas.User
+﻿@model IISProjektas.Models.UserEditModel
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Vartotojo redagavimas";
 }
 
 <h2>Edit</h2>
@@ -11,7 +11,7 @@
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>User</legend>
+        <legend>Vartotojas</legend>
 
         @Html.HiddenFor(model => model.Id)
 
@@ -40,21 +40,48 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.state, "UserState")
+            @Html.LabelFor(model => model.newPassword)
         </div>
         <div class="editor-field">
-            @Html.DropDownList("state", String.Empty)
+            @Html.EditorFor(model => model.newPassword)
+            @Html.ValidationMessageFor(model => model.newPassword)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.confirmNewPassword)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.confirmNewPassword)
+            @Html.ValidationMessageFor(model => model.confirmNewPassword)
+          </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.state)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.state, new SelectList(Model.stateDropDown, "Value", "Text"))
             @Html.ValidationMessageFor(model => model.state)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.permissions)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.permissions, new SelectList(Model.groupDropDown, "Value", "Text"))
+            @Html.ValidationMessageFor(model => model.permissions)
         </div>
 
         <p>
             <input type="submit" value="Save" />
+            <span class="Back_button">
+                @Html.ActionLink("Atgal", "Index")
+            </span>
         </p>
-    </fieldset>
+        @Html.HiddenFor(model => model.oldPassword)
+</fieldset>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    
 </div>
 
 @section Scripts {
