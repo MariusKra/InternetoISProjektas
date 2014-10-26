@@ -15,21 +15,29 @@ namespace IISProjektas.Models
         [HiddenInput]
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Skelbimo pavadinimas yra būtinas")]
         [Display(Name = "AdName", ResourceType = typeof(IISProjektas.Resources))]
-        [StringLength(100, ErrorMessage = "{0} turi būti bent {2} simbolių ilgio.", MinimumLength = 6)]
+        [StringLength(20, ErrorMessage = "{0} turi būti bent {2} simbolių ilgio.", MinimumLength = 6)]
         public string name { get; set; }
 
-        [Display(Name = "AdName", ResourceType = typeof(IISProjektas.Resources))]
+        [Required(ErrorMessage = "Skelbimo aprašymas yra būtinas")]
+        [Display(Name = "AdDesc", ResourceType = typeof(IISProjektas.Resources))]
         [StringLength(100, ErrorMessage = "{0} turi būti bent {2} simbolių ilgio.", MinimumLength = 10)]
         public string description { get; set; }
+
 
         [Display(Name = "AdCategory", ResourceType = typeof(IISProjektas.Resources))]
         public int category_id { get; set; }
                
-        [FileSize(10240)]
+        //[FileSize(10240)]
         [FileTypes("jpg,jpeg,png")]
-        public HttpPostedFileBase File { get; set; }
+        [Display(Name = "AdImage", ResourceType = typeof(IISProjektas.Resources))]
+        public HttpPostedFileBase Image { get; set; }
+        //[DataType(DataType.ImageUrl)]
+        //public string Image { get; set; }
 
+
+        public IEnumerable<SelectListItem> categoryDropDown { get; set; }
         
     }
 }

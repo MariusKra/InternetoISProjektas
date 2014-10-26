@@ -87,6 +87,7 @@
     <EntitySetMapping Name="Advertisements">
       <EntityTypeMapping TypeName="SQLiteDatabase.Advertisement">
         <MappingFragment StoreEntitySet="Advertisement">
+          <ScalarProperty Name="date_created" ColumnName="date_created" />
           <ScalarProperty Name="Image" ColumnName="Image" />
           <ScalarProperty Name="user_id" ColumnName="user_id" />
           <ScalarProperty Name="category_id" ColumnName="category_id" />

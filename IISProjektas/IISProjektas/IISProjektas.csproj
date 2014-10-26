@@ -212,6 +212,8 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\AdvertisementCreateModel.cs" />
+    <Compile Include="Models\AdvertisementFilterModel.cs" />
+    <Compile Include="Models\AdvertisementModel.cs" />
     <Compile Include="Models\UserEditModel.cs" />
     <Compile Include="Models\UserLoginModel.cs" />
     <Compile Include="Models\UserModel.cs" />
@@ -254,6 +256,7 @@
     </Compile>
     <Compile Include="Views\Shared\EditorTemplates\FileSizeAttribute.cs" />
     <Compile Include="Views\Shared\EditorTemplates\FileTypesAttribute.cs" />
+    <Compile Include="Views\Shared\EditorTemplates\HtmlExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -406,7 +409,8 @@
     <Content Include="Views\Home\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="App_Data\Images\" />
+    <Folder Include="Views\Home\Partial\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

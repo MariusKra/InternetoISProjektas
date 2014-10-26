@@ -26,6 +26,7 @@ namespace IISProjektas
         public int category_id { get; set; }
         public int user_id { get; set; }
         public string Image { get; set; }
+        public System.DateTime date_created { get; set; }
     
         public virtual Category Category { get; set; }
         public virtual User User { get; set; }

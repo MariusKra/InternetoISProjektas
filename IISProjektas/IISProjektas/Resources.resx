@@ -150,6 +150,12 @@
   <data name="AdCategory" xml:space="preserve">
     <value>Skelbimo kategorija</value>
   </data>
+  <data name="AdDesc" xml:space="preserve">
+    <value>Skelbimo aprašymas</value>
+  </data>
+  <data name="AdImage" xml:space="preserve">
+    <value>Skelbimo nuotrauka</value>
+  </data>
   <data name="AdName" xml:space="preserve">
     <value>Skelbimo pavadinimas</value>
   </data>

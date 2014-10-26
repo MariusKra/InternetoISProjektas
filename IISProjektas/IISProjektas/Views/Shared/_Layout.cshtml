@@ -21,9 +21,22 @@
                     <nav>
                         <ul id="menu">
                             <li>@Html.ActionLink("Skelbimai", "Index", "Home")</li>
-                            <li>@Html.ActionLink("Mano skelbimai", "MyAds", "Home")</li>
-                            <li>@Html.ActionLink("Pranešimai", "Messages", "Home")</li>                            
+                            @if (Session["Permissions"] != null)
+                            {
+                                <li>@Html.ActionLink("Mano skelbimai", "MyAds", "Home")</li>
+                                <li>@Html.ActionLink("Pranešimai", "Messages", "Home")</li>
+                            if (int.Parse(Session["Permissions"].ToString()) > 1)
+                            {
+                                <li>@Html.ActionLink("Vartotojai", "Index", "User")</li>
+                            }
+                            }
+                           
+                            
+
                         </ul>
+
+
+
                     </nav>
                 </div>
             </div>

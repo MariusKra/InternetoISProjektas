@@ -52,32 +52,43 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.confirmNewPassword)
             @Html.ValidationMessageFor(model => model.confirmNewPassword)
-          </div>
+        </div>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.state)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.state, new SelectList(Model.stateDropDown, "Value", "Text"))
+            @Html.DropDownListFor(model => model.state, new SelectList(Model.stateDropDown, "Value", "Text"), new { @class = "dropDown" })
             @Html.ValidationMessageFor(model => model.state)
         </div>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.permissions)
         </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(model => model.permissions, new SelectList(Model.groupDropDown, "Value", "Text"))
-            @Html.ValidationMessageFor(model => model.permissions)
-        </div>
+        @if (int.Parse(Session["Permissions"].ToString()) > 2)
+        {
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.permissions, new SelectList(Model.groupDropDown, "Value", "Text"), new { @class = "dropDown" })
+                @Html.ValidationMessageFor(model => model.permissions)
+            </div>
+        }
+        else
+        {
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.permissions, new SelectList(Model.groupDropDown, "Value", "Text"), new { @class = "dropDown", @disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.permissions)
+            </div>
+        }
 
         <p>
+
             <input type="submit" value="Save" />
             <span class="Back_button">
                 @Html.ActionLink("Atgal", "Index")
             </span>
         </p>
         @Html.HiddenFor(model => model.oldPassword)
-</fieldset>
+    </fieldset>
 }
 
 <div>

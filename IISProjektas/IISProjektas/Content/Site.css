@@ -437,6 +437,7 @@ input, textarea {
 textarea {
     font-family: inherit;
     width: 500px;
+    height:100px;
 }
 
     input:focus, textarea:focus {
@@ -765,4 +766,84 @@ padding: 7px;
 margin-right: 8px;
 width: auto;
 position:relative;
+ font-family: initial !important;
+
+ 
+}
+
+.Back_button a{
+     text-decoration:none!important;
+     font-weight: 600;
+     cursor: pointer;
+     margin:7px;
+font-size: 1.1em;
+width: auto;
+padding-top:1px;
+}
+
+.Back_button a:hover{
+  background-color:inherit;
+
+}
+
+
+.dropDown{
+    border: 1px solid #e2e2e2;
+background: #fff;
+color: #333;
+font-size: 1.2em;
+margin: 5px 0 6px 0;
+padding: 5px;
+width: 312px;
+
+}
+
+tr:nth-child(odd) {background: #c7d1d6}
+tr{
+    background-color:#e2e2e2;
+}
+
+.advertisement-wrapper{
+   /* width:300px!important;
+    height:300px!important;
+    margin:50px;
+    visibility:visible!important;
+    display:block;
+    float:left;
+    border: 2 px solid red;
+    position:absolute;
+    */
+
+   /*width:700px*/
+}
+
+.advertisement-image{
+    display:block;
+    float:left;
+
+}
+.advertisement-author{
+    font-weight:600;
+    display:block;
+    width:250px;  
+    float:left;
+    margin:5px;
+    text-align:left;
+}
+
+.advertisement-category{
+    display:block;
+    float:left;
+    margin:5px;
+    width:250px;
+    text-align:right;
+}
+
+.advertisement-text{
+    font-size:large;
+}
+
+.ad-wrap{
+    height:300px;
+    width: 300px;
 }

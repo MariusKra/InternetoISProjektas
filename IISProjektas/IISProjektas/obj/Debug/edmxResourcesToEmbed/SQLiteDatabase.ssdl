@@ -10,6 +10,7 @@
     <Property Name="category_id" Type="int" Nullable="false" />
     <Property Name="user_id" Type="int" Nullable="false" />
     <Property Name="Image" Type="nvarchar" MaxLength="100" />
+    <Property Name="date_created" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="Category">
     <Key>

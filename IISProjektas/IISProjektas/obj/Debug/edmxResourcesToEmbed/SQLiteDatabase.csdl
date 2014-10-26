@@ -242,6 +242,7 @@
     <Property Name="category_id" Type="Int32" Nullable="false" />
     <Property Name="user_id" Type="Int32" Nullable="false" />
     <Property Name="Image" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="date_created" Type="DateTime" Nullable="false" Precision="3" />
     <NavigationProperty Name="Category" Relationship="SQLiteDatabase.FK_Advertisement_Category" FromRole="Advertisement" ToRole="Category" />
     <NavigationProperty Name="User" Relationship="SQLiteDatabase.FK_Advertisement_User" FromRole="Advertisement" ToRole="User" />
     <NavigationProperty Name="Comments" Relationship="SQLiteDatabase.FK_Comment_Advertisement" FromRole="Advertisement" ToRole="Comment" />

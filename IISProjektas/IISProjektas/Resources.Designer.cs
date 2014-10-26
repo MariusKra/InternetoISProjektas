@@ -79,6 +79,24 @@ namespace IISProjektas {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Skelbimo aprašymas.
+        /// </summary>
+        public static string AdDesc {
+            get {
+                return ResourceManager.GetString("AdDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skelbimo nuotrauka.
+        /// </summary>
+        public static string AdImage {
+            get {
+                return ResourceManager.GetString("AdImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Skelbimo pavadinimas.
         /// </summary>
         public static string AdName {

@@ -3,7 +3,7 @@
 }
 
 @model IISProjektas.Models.AdvertisementCreateModel
-
+@*
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -53,6 +53,65 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}*@
+
+
+
+
+
+@using (Html.BeginForm("CreateAdvertisement", "Home", FormMethod.Post, new { @id = "createAdvertisement", @enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Skelbimas</legend>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.name)
+            @Html.ValidationMessageFor(model => model.name)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.description)
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.description)
+            @Html.ValidationMessageFor(model => model.description)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(x => x.category_id)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.category_id, new SelectList(Model.categoryDropDown, "Value", "Text"), new { @class = "dropDown" })
+            @Html.ValidationMessageFor(model => model.category_id)
+        </div>
+
+
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Image)
+        </div>
+        <div class="editor-field">
+            <input type="file" name="Image" id="Image" />
+            @Html.ValidationMessageFor(model => model.Image)
+        </div>
+        <p>
+            <input type="submit" value="Create" />
+
+            <span class="Back_button">
+                @Html.ActionLink("Atgal", "MyAds")
+
+            </span>
+
+        </p>
+    </fieldset>
+}
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

@@ -315,7 +315,7 @@ namespace IISProjektas.Controllers
         {
             Session["LogedUserID"] = null;
             Session["LogedUsername"] = null;
-
+            Session["Permissions"] = null;
             return RedirectToAction("Index", "Home");
         }
 
