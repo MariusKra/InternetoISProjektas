@@ -1,139 +1,114 @@
-﻿@{
+﻿@model IISProjektas.Models.AdvertisementFilterModel
+@using PagedList.Mvc;
+
+@{
     ViewBag.Title = "Pagrindinis puslapis";
 }
 
-@model IISProjektas.Models.AdvertisementFilterModel
 
-    <h2> Filtras</h2>
-    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "filterForm" }))
-    {
-        <fieldset>
-            <div style="display:block;float:left">
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+
+<h2> Filtras</h2>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "filterForm" }))
+{
+    <fieldset>
+        <div style="display:block;float:left">
             <div class="editor-label">
                 @Html.LabelFor(model => model.usernameFilter)
             </div>
             <div class="editor-field">
-                @Html.TextBoxFor(model => model.usernameFilter)
-                @Html.ValidationMessageFor(model => model.usernameFilter)
+                @*@Html.TextBoxFor(model => model.usernameFilter)
+                    @Html.ValidationMessageFor(model => model.usernameFilter)*@
+                @Html.TextBox("usernameFilter", ViewBag.descriptionFilter as string)
             </div>
-            </div>
-            <div style="display:block;float:left; margin-left:30px;">
+        </div>
+        <div style="display:block;float:left; margin-left:30px;">
             <div class="editor-label">
                 @Html.LabelFor(model => model.categoryFilter)
             </div>
             <div class="editor-field">
-                @Html.DropDownListFor(model => model.categoryFilter, new SelectList(Model.categoryDropDownList, "Value", "Text"), new { @class = "dropDown" })
-                @Html.ValidationMessageFor(model => model.categoryFilter)
+                @*@Html.DropDownListFor(model => model.categoryFilter, new SelectList(Model.categoryDropDownList, "Value", "Text"), new { @class = "dropDown" })
+                    @Html.ValidationMessageFor(model => model.categoryFilter)*@
+                @Html.DropDownList("categoryFilter", new SelectList(ViewBag.categoryDropDownList, "Value", "Text"), new { @class = "dropDown" })
             </div>
+        </div>
+        <div style="display:inline-block">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.descriptionFilter)
             </div>
-            <div style="display:inline-block">
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.descriptionFilter)
-                </div>
-                <div class="editor-field">
-                    @Html.TextAreaFor(model => model.descriptionFilter)
-                    @Html.ValidationMessageFor(model => model.descriptionFilter)
-                </div>
+            <div class="editor-field">
+                @*@Html.TextAreaFor(model => model.descriptionFilter)
+                    @Html.ValidationMessageFor(model => model.descriptionFilter)*@
+                @Html.TextArea("descriptionFilter", ViewBag.descriptionFilter as string)
+
             </div>
-            <br/>
+        </div>
+        <br />
 
 
-            <input type="submit" value="Filtruoti" />
+        <input type="submit" value="Filtruoti" />
 
-            <span class="Back_button" style="font:-webkit-small-control" onclick="resetFilter()">Išvalyti filtrą</span>
+        <span class="Back_button" style="font:-webkit-small-control" onclick="resetFilter()">Išvalyti filtrą</span>
 
-        </fieldset>
-    }
-
-
-        @foreach (var item in Model.adsList)
-    {
-
-            <div style="border:2px solid black;margin:10px; width:700px;display:inline-block;clear:both">
-                <span class="advertisement-image">
-
-                    <img src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(item.image))" alt="Image" height="160px" width="160px" />
-
-                </span>
-                <span class="advertisement-author">
-                    Skelbimo autorius: @Html.ActionLink(item.author, "Details", "User", new { id = item.author_id }, null)
-                </span>
-                <span class="advertisement-category">
-                    Kategorija: @Html.DisplayFor(x => item.category)
-                </span>
-                <span style="display:inline-block; text-align:right;float:right;margin-right:10px">
-                    Įkėlimo data: @Html.DisplayFor(x => item.dateCreated)
-                </span>
-
-                <h3 style="text-align:center">@Html.DisplayFor(x => item.name)</h3>
-                <span style="margin:5px;display:inline-block">
-                    @Html.DisplayFor(x => item.description)
-                </span>
-                <span style="text-align:right">
-                    Įkėlimo data:
-
-                </span>
-            </div>
-
-    }
+    </fieldset>
+}
 
 
+@foreach (var item in Model.adsList)
+{
 
-        @*@section featured {
-                <section class="featured">
-                    <div class="content-wrapper">
-                        <hgroup class="title">
-                            <h1>@ViewBag.Title.</h1>
-                            <h2>@ViewBag.Message</h2>
-                        </hgroup>
-                        <p>
-                            To learn more about ASP.NET MVC visit
-                            <a href="http://asp.net/mvc" title="ASP.NET MVC Website">http://asp.net/mvc</a>.
-                            The page features <mark>videos, tutorials, and samples</mark> to help you get the most from ASP.NET MVC.
-                            If you have any questions about ASP.NET MVC visit
-                            <a href="http://forums.asp.net/1146.aspx/1?MVC" title="ASP.NET MVC Forum">our forums</a>.
-                        </p>
-                    </div>
-                </section>
-            }
-            <h3>We suggest the following:</h3>
+    <div style="border:2px solid black;margin:10px; width:700px;display:inline-block;clear:both">
+        <span class="advertisement-image">
 
-            <div>
+            <img src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(item.image))" alt="Image" height="160px" width="160px" />
 
+        </span>
+        <span class="advertisement-author">
+            Skelbimo autorius: @Html.ActionLink(item.author, "Details", "User", new { id = item.author_id }, null)
+        </span>
+        <span class="advertisement-category">
+            Kategorija: @Html.DisplayFor(x => item.category)
+        </span>
+        <span style="display:inline-block; text-align:right;float:right;margin-right:10px">
+            Įkėlimo data: @Html.DisplayFor(x => item.dateCreated)
+        </span>
 
-            </div>*@
-        @*
-            <ol class="round">
-                <li class="one">
-                    <h5>Getting Started</h5>
-                    ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                    enables a clean separation of concerns and that gives you full control over markup
-                    for enjoyable, agile development. ASP.NET MVC includes many features that enable
-                    fast, TDD-friendly development for creating sophisticated applications that use
-                    the latest web standards.
-                    <a href="http://go.microsoft.com/fwlink/?LinkId=245151">Learn more…</a>
-                </li>
+        <h3 style="text-align:center">@Html.DisplayFor(x => item.name)</h3>
+        <span style="margin:5px;display:inline-block">
+            @Html.DisplayFor(x => item.description)
+        </span>
+        @if (Session["Permissions"] != null && int.Parse(Session["Permissions"].ToString()) == 3)
+        {
+            <span style="float:right;display:block;margin-top:5px" class="Back_button">
+                @Html.ActionLink("Redaguoti", "EditAdvertisement", "Home", new { id = item.Id }, null)
+            </span>
+            <br /><br />
+            <span style="float:right;display:block" class="Back_button">
+                @Html.ActionLink("Ištrinti", "DeleteAdvertisement", "Home", new { id = item.Id }, null)
+            </span>
+        }
+    </div>
 
-                <li class="two">
-                    <h5>Add NuGet packages and jump-start your coding</h5>
-                    NuGet makes it easy to install and update free libraries and tools.
-                    <a href="http://go.microsoft.com/fwlink/?LinkId=245153">Learn more…</a>
-                </li>
+}
 
-                <li class="three">
-                    <h5>Find Web Hosting</h5>
-                    You can easily find a web hosting company that offers the right mix of features
-                    and price for your applications.
-                    <a href="http://go.microsoft.com/fwlink/?LinkId=245157">Learn more…</a>
-                </li>
-            </ol>
-        *@
+<br />
+Page @(Model.adsList.PageCount < Model.adsList.PageNumber ? 0 : Model.adsList.PageNumber) of @Model.adsList.PageCount
+
+@Html.PagedListPager(Model.adsList, page => Url.Action("Index",
+                                new { page, usernameFilter = ViewBag.usernameFilter, descriptionFilter = ViewBag.descriptionFilter, categoryFilter = ViewBag.categoryFilter }))
+
 <script type="text/javascript">
     function resetFilter() {
         $("#usernameFilter").val("");
         $("#categoryFilter").val("0");
         $("#descriptionFilter").val("");
         $("#filterForm").submit();
+
     }
+    $(document).ready(function () {
+        $("#categoryFilter").val(@ViewBag.categoryFilter);
+    });
+
 
 </script>

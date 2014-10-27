@@ -84,3 +84,7 @@ C:\Developement\IIS Projektas\IISProjektas\IISProjektas\obj\Debug\IISProjektas.p
 C:\Developement\IIS Projektas\IISProjektas\IISProjektas\obj\Debug\IISProjektas.Resources.resources
 C:\Developement\IIS Projektas\IISProjektas\IISProjektas\obj\Debug\IISProjektas.csproj.GenerateResource.Cache
 C:\Developement\IIS Projektas\IISProjektas\IISProjektas\obj\Debug\IISProjektas.csprojResolveAssemblyReference.cache
+C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\PagedList.dll
+C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\PagedList.Mvc.dll
+C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\PagedList.xml
+C:\Developement\IIS Projektas\IISProjektas\IISProjektas\bin\PagedList.Mvc.xml

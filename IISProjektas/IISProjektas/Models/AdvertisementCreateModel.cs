@@ -36,7 +36,7 @@ namespace IISProjektas.Models
         //[DataType(DataType.ImageUrl)]
         //public string Image { get; set; }
 
-
+        
         public IEnumerable<SelectListItem> categoryDropDown { get; set; }
         
     }

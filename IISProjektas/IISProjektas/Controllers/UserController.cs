@@ -151,6 +151,12 @@ namespace IISProjektas.Controllers
             return View(model);
         }
 
+        public ActionResult EditAdvertisement()
+        {
+
+
+            return View();
+        }
 
         //
         // GET: /User/Delete/5

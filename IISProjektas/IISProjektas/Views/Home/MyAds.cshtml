@@ -1,38 +1,95 @@
-﻿@{
+﻿@using PagedList.Mvc;
+@using IISProjektas.Models;
+@{
     ViewBag.Title = "Mano skelbimai";
 }
+
+@model PagedList.PagedList<AdvertisementModel>
 
 <hgroup class="title">
     <h1>@ViewBag.Title.</h1>
     <h2>@ViewBag.Message</h2>
 </hgroup>
 
-@if(Request.Cookies["AdCreated"] != null)
+@if (Request.Cookies["AdCreated"] != null)
 {
-    
-    
-    
-    if(Request.Cookies["AdCreated"].Value == "1")
-    { 
-    <h3>
-        Naujas skelbimas sėkmingai sukurtas
-       
-    </h3>
-    }
-    if(Request.Cookies["AdCreated"].Value == "2")
+
+
+
+    if (Request.Cookies["AdCreated"].Value == "1")
     {
-        <h3>
+        <h3 style="color:green">
+            Naujas skelbimas sėkmingai sukurtas
+
+        </h3>
+        <br />
+    }
+    if (Request.Cookies["AdCreated"].Value == "2")
+    {
+        <h3 style="color:red">
             Kuriant skelbima įvyko klaida, bandyke dar kartą
 
         </h3>
+        <br />
     }
 
 }
 
 <span class="Back_button">
-@Html.ActionLink("Sukurti naują skelbimą", "Create")
+    @Html.ActionLink("Sukurti naują skelbimą", "Create")
 
 </span>
+</br><br />
+
+
+
+@foreach (var item in Model)
+{
+
+    <div style="border:2px solid black;margin:10px; width:700px;display:inline-block;clear:both">
+        <span class="advertisement-image">
+
+            <img src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(item.image))" alt="Image" height="160px" width="160px" />
+
+        </span>
+        <span class="advertisement-author">
+            Skelbimo autorius: @Html.ActionLink(item.author, "Details", "User", new { id = item.author_id }, null)
+        </span>
+        <span class="advertisement-category">
+            Kategorija: @Html.DisplayFor(x => item.category)
+        </span>
+        <span style="display:inline-block; text-align:right;float:right;margin-right:10px">
+            Įkėlimo data: @Html.DisplayFor(x => item.dateCreated)
+        </span>
+
+        <h3 style="text-align:center">@Html.DisplayFor(x => item.name)</h3>
+        <span style="margin:5px;display:inline-block">
+            @Html.DisplayFor(x => item.description)
+        </span>
+
+        <span style="float:right;display:block;margin-top:5px" class="Back_button">
+            @Html.ActionLink("Redaguoti", "EditAdvertisement", "Home", new { id = item.Id }, null)
+        </span>
+        <br /><br />
+        <span style="float:right;display:block" class="Back_button">
+            @Html.ActionLink("Ištrinti", "DeleteAdvertisement", "Home", new { id = item.Id }, null)
+        </span>
+
+    </div>
+
+}
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("MyAds",
+                                new { page }))
+
+
+
+
+
+
 
 
 

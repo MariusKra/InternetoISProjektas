@@ -9,8 +9,8 @@ namespace IISProjektas.Models
 {
     public class AdvertisementFilterModel
     {
-        public IEnumerable<IISProjektas.Models.AdvertisementModel> adsList { get; set; }
-
+        //public IEnumerable<IISProjektas.Models.AdvertisementModel> adsList { get; set; }
+        
         [Display(Name = "AdCategory", ResourceType = typeof(IISProjektas.Resources))]
         public int categoryFilter { get; set; }
 
@@ -24,5 +24,7 @@ namespace IISProjektas.Models
 
         public IEnumerable<SelectListItem> categoryDropDownList { get; set; }
 
+        public PagedList.IPagedList<IISProjektas.Models.AdvertisementModel> adsList { get; set; }
+         
     }
 }

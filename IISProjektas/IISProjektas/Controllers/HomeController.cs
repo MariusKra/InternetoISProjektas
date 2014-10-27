@@ -5,14 +5,23 @@ using System.Web;
 using System.Web.Mvc;
 using IISProjektas.Models;
 using System.IO;
-
+using PagedList;
+using PagedList.Mvc;
 
 namespace IISProjektas.Controllers
 {
     public class HomeController : Controller
     {
         private Entities db = new Entities();
-        public ActionResult Index(AdvertisementFilterModel modelOld)
+
+        /*public ActionResult Index2(int? page)
+        {
+            var ads = db.Advertisements.OrderByDescending(x => x.date_created).ToList();
+
+        
+        }*/
+
+        public ActionResult Index(AdvertisementFilterModel modelOld, int? page, string descriptionFilter, string usernameFilter, string categoryFilter)
         {
 
         //http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/sorting-filtering-and-paging-with-the-entity-framework-in-an-asp-net-mvc-application
@@ -23,21 +32,27 @@ namespace IISProjektas.Controllers
             var ads = db.Advertisements.OrderByDescending(x => x.date_created).ToList();
 
             AdvertisementFilterModel model = new AdvertisementFilterModel();
-            if (!String.IsNullOrEmpty(modelOld.descriptionFilter))
+           
+            if (!String.IsNullOrEmpty(descriptionFilter))
             {
-                ads = ads.Where(x => x.description.ToUpper().Contains(modelOld.descriptionFilter.ToUpper())).ToList();
+                ads = ads.Where(x => x.description.ToUpper().Contains(descriptionFilter.ToUpper())).ToList();
 
-            }
-            if (!String.IsNullOrEmpty(modelOld.usernameFilter))
-            {
-                ads = ads.Where(x => x.User.username.ToUpper().Contains(modelOld.usernameFilter.ToUpper())).ToList();
 
             }
 
-            if (modelOld.categoryFilter != null && modelOld.categoryFilter > 0)
+            if (!String.IsNullOrEmpty(usernameFilter))
             {
-                ads = ads.Where(x => x.category_id == modelOld.categoryFilter).ToList();
+                ads = ads.Where(x => x.User.username.ToUpper().Contains(usernameFilter.ToUpper())).ToList();
+
             }
+
+            if (!String.IsNullOrEmpty(categoryFilter) && int.Parse(categoryFilter)>0)
+            {
+                ads = ads.Where(x => x.category_id == int.Parse(categoryFilter)).ToList();
+
+            }
+
+           
 
 
             foreach (Advertisement ad in ads)
@@ -54,24 +69,58 @@ namespace IISProjektas.Controllers
                 list.Add(mod);
             }
 
-            List<SelectListItem> listas = db.Categories.ToList().Select(z => new SelectListItem()
+            List<SelectListItem> listas = new List<SelectListItem>();
+                listas.Add(new SelectListItem() {Value = "0", Text = "", Selected=true });
+                listas = listas.Union(db.Categories.ToList().Select(z => new SelectListItem()
                  {
                      Text = z.name,
                      Value = z.Id.ToString()
-                 }).ToList();
-            listas.Add(new SelectListItem() {Value = "0", Text = "", Selected=true });
-            model.categoryDropDownList = listas;
-            model.categoryFilter = modelOld.categoryFilter;
-            model.descriptionFilter = modelOld != null ? modelOld.descriptionFilter : "";
-            model.usernameFilter = modelOld != null ? modelOld.usernameFilter : "";
+                 }).ToList()).ToList();
+                
+            
+            ViewBag.descriptionFilter = descriptionFilter;
+            ViewBag.usernameFilter = usernameFilter;
+            ViewBag.categoryFilter = categoryFilter;
+            ViewBag.categoryDropDownList = listas;
 
-            model.adsList = list;
+
+            int pageSize = 7;
+            int pageNumber = (page ?? 1);
+
+            model.adsList = list.ToPagedList(pageNumber, pageSize);
+            
             return View(model);
         }
 
-        public ActionResult MyAds()
+        public ActionResult MyAds(int? page)
         {
             ViewBag.Message = "";
+
+            List<AdvertisementModel> list = new List<AdvertisementModel>();
+            int id = int.Parse(Session["LogedUserID"].ToString());
+            var ads = db.Advertisements.OrderByDescending(x => x.date_created).Where(x => x.user_id == id).ToList();
+
+            foreach (Advertisement ad in ads)
+            {
+                AdvertisementModel mod = new AdvertisementModel();
+                mod.Id = ad.Id;
+                mod.image = System.IO.File.ReadAllBytes(ad.Image);
+                mod.category = ad.Category.name;
+                mod.author = ad.User.username;
+                mod.description = ad.description;
+                mod.name = ad.name;
+                mod.author_id = ad.user_id;
+                mod.dateCreated = ad.date_created.ToString("yyyy-MM-dd");
+                list.Add(mod);
+            }
+
+            int pageSize = 7;
+            int pageNumber = (page ?? 1);
+
+
+            return View(list.ToPagedList(pageNumber, pageSize));
+
+
 
             return View();
         }
