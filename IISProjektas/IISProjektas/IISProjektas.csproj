@@ -218,6 +218,7 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\AdvertisementCreateModel.cs" />
+    <Compile Include="Models\AdvertisementEditModel.cs" />
     <Compile Include="Models\AdvertisementFilterModel.cs" />
     <Compile Include="Models\AdvertisementModel.cs" />
     <Compile Include="Models\UserEditModel.cs" />
@@ -263,6 +264,7 @@
     <Compile Include="Views\Shared\EditorTemplates\FileSizeAttribute.cs" />
     <Compile Include="Views\Shared\EditorTemplates\FileTypesAttribute.cs" />
     <Compile Include="Views\Shared\EditorTemplates\HtmlExtensions.cs" />
+    <Compile Include="Views\Shared\EditorTemplates\MyStringLengthAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\PagedList.css" />

@@ -29,12 +29,9 @@
                     @Html.PasswordFor(m => m.password)
                     @Html.ValidationMessageFor(m => m.password)
                 </li>
-                <li>
-                    @Html.CheckBoxFor(m => m.RememberMe)
-                    @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
-                </li>
+                
             </ol>
-            <input type="submit" value="Log in" />
+            <input type="submit" value="Prisijungti" />
         </fieldset>
         <p>
             @Html.ActionLink("Registracija", "Register") jei nesate susikūrę vartotojo.

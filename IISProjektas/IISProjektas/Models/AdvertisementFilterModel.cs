@@ -25,6 +25,8 @@ namespace IISProjektas.Models
         public IEnumerable<SelectListItem> categoryDropDownList { get; set; }
 
         public PagedList.IPagedList<IISProjektas.Models.AdvertisementModel> adsList { get; set; }
+
+       
          
     }
 }

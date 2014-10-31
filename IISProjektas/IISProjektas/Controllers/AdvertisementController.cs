@@ -14,17 +14,17 @@ namespace IISProjektas.Controllers
 
         //
         // GET: /Advertisement/
-
+        /*
         public ActionResult Index()
         {
 
             var advertisements = db.Advertisements.Include(a => a.Category).Include(a => a.User);
             return View(advertisements.ToList());
-        }
+        }*/
 
         //
         // GET: /Advertisement/Details/5
-
+        
         public ActionResult Details(int id = 0)
         {
             Advertisement advertisement = db.Advertisements.Find(id);
@@ -37,17 +37,17 @@ namespace IISProjektas.Controllers
 
         //
         // GET: /Advertisement/Create
-
+        /*
         public ActionResult Create()
         {
             ViewBag.category_id = new SelectList(db.Categories, "Id", "name");
             ViewBag.user_id = new SelectList(db.Users, "Id", "username");
             return View();
-        }
+        }*/
 
         //
         // POST: /Advertisement/Create
-
+        /*
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Advertisement advertisement)
@@ -66,7 +66,7 @@ namespace IISProjektas.Controllers
 
         //
         // GET: /Advertisement/Edit/5
-
+        */
         public ActionResult Edit(int id = 0)
         {
             Advertisement advertisement = db.Advertisements.Find(id);

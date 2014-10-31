@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<IISProjektas.Models.UserModel>
 
 @{
-    ViewBag.Title = "Vartodojų administravimas";
+    ViewBag.Title = "Vartotojų administravimas";
 }
 
 <hgroup class="title">
@@ -9,35 +9,49 @@
     <h2>Vartotojų sąrašas.</h2>
 </hgroup>
 
-<table>
-@foreach(var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.username)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.password)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.stateText, new { @disabled = "disabled" })
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.permissionsText, new { @disabled = "disabled" })
-        </td>
-        
-        <td>
+<table class="user-edit-table">
+    <thead>
+    <th style="width:150px">Vartotojo vardas </th>
+    <th style="width:250px">El. Paštas </th>
+    <th style="width:100px">Būsena </th>
+    <th style="width:180px">Teisės </th>
+    <th style="width:100px">Redaguoti </th>
+    @if (Session["Permissions"] != null && int.Parse(Session["Permissions"].ToString()) > 2)
+    {
+       <th>Ištrinti</th>
+    }
+    </thead>
 
-            @Html.ActionLink("Redaguoti", "Edit", new { id = item.Id }) 
-            @if (Session["Permissions"]!= null && int.Parse(Session["Permissions"].ToString()) > 2)
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.stateText, new { @disabled = "disabled" })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.permissionsText, new { @disabled = "disabled" })
+            </td>
+
+            <td>
+
+                @Html.ActionLink("Redaguoti", "Edit", new { id = item.Id })
+            </td>
+
+            @if (Session["Permissions"] != null && int.Parse(Session["Permissions"].ToString()) > 2)
             {
-                @Html.ActionLink("Ištrinti", "Delete", new { id = item.Id })
-            }           
-        </td>
-    </tr>
-    
-}
+                
+                <td>@Html.ActionLink("Ištrinti", "Delete", new { id = item.Id })</td>
+            }
+        </tr>
+
+    }
 
 </table>
+

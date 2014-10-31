@@ -24,9 +24,11 @@ namespace IISProjektas.Models
         ErrorMessage = "Įrašykite tinkamą elektroninį paštą")]
         public string email { get; set; }
 
+        /*
         [HiddenInput]
         public string oldPassword { get; set; }
 
+        
         [Required]
         [Compare("oldPassword", ErrorMessage = "Įvestas buvęs slaptažodis neteisingas")]
         [Display(Name = "password", ResourceType = typeof(IISProjektas.Resources))]
@@ -46,7 +48,7 @@ namespace IISProjektas.Models
         [DataType(DataType.Password)]
         [Compare("newPassword", ErrorMessage = "Slaptažodžiai nesutampa")]
         public string confirmNewPassword { get; set; }
-
+        */
         [Display(Name = "userState", ResourceType = typeof(IISProjektas.Resources))]
         public int state { get; set; }
 

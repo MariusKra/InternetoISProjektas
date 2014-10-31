@@ -12,21 +12,15 @@
 
 @if (ViewBag.Message != null)
 {
-    <div style="color:green">
+    <div style="color:green;font-size:large">
         @ViewBag.Message
         @Html.ActionLink("Prisijungti", "Login", "User");
 
     </div>
+    
 }
 
-@if (ViewBag.Error != null)
-{
-    <div style="color:red">
-        @ViewBag.Error
-        
 
-    </div>
-}
 
 @using (Html.BeginForm())
 {
@@ -60,7 +54,7 @@
                 @Html.ValidationMessageFor(model => model.confirmPassword)
             </li>
         </ol>
-        <input type="submit" value="Register" />
+        <input type="submit" value="Registruotis" />
         <span class="Back_button">
             @Html.ActionLink("Atgal", "Index", "Home")
 

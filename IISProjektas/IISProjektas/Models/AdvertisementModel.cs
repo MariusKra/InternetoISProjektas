@@ -1,5 +1,7 @@
-﻿using System;
+﻿using IISProjektas.Views.Shared.EditorTemplates;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -8,6 +10,8 @@ namespace IISProjektas.Models
 {
     public class AdvertisementModel
     {
+
+        
         [HiddenInput]
         public int Id { get; set; }
 
@@ -26,6 +30,7 @@ namespace IISProjektas.Models
 
        // public string image { get; set; }
         public byte[] image { get; set; }
+
 
     }
 }

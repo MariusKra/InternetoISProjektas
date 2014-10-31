@@ -59,7 +59,19 @@
 }*@
 
 
+@if (Request.Cookies["AdCreated"] != null)
+{
+    
+    if (Request.Cookies["AdCreated"].Value == "2")
+    {
+        <h3 style="color:red">
+            dsfdfsdf
 
+        </h3>
+        <br />
+    }
+
+}
 
 
 @using (Html.BeginForm("CreateAdvertisement", "Home", FormMethod.Post, new { @id = "createAdvertisement", @enctype = "multipart/form-data" }))
@@ -97,7 +109,9 @@
             @Html.LabelFor(model => model.Image)
         </div>
         <div class="editor-field">
-            <input type="file" name="Image" id="Image" />
+            @*<input type="file" name="Image" id="Image" />*@
+            @*@Html.EditorFor(model => model.Image)*@
+            @Html.TextBoxFor(model => model.Image, new { type = "file" })
             @Html.ValidationMessageFor(model => model.Image)
         </div>
         <p>

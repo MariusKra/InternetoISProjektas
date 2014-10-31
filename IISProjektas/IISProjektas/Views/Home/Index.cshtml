@@ -10,7 +10,7 @@
 
 
 <h2> Filtras</h2>
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "filterForm" }))
+@using (Html.BeginForm(null, null, FormMethod.Get, new { id = "filterForm" }))
 {
     <fieldset>
         <div style="display:block;float:left">
@@ -53,44 +53,100 @@
 
     </fieldset>
 }
+@* bootstrap table strip  su div apsirašo*@
 
 
-@foreach (var item in Model.adsList)
-{
-
-    <div style="border:2px solid black;margin:10px; width:700px;display:inline-block;clear:both">
-        <span class="advertisement-image">
-
-            <img src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(item.image))" alt="Image" height="160px" width="160px" />
-
-        </span>
-        <span class="advertisement-author">
-            Skelbimo autorius: @Html.ActionLink(item.author, "Details", "User", new { id = item.author_id }, null)
-        </span>
-        <span class="advertisement-category">
-            Kategorija: @Html.DisplayFor(x => item.category)
-        </span>
-        <span style="display:inline-block; text-align:right;float:right;margin-right:10px">
-            Įkėlimo data: @Html.DisplayFor(x => item.dateCreated)
-        </span>
-
-        <h3 style="text-align:center">@Html.DisplayFor(x => item.name)</h3>
-        <span style="margin:5px;display:inline-block">
-            @Html.DisplayFor(x => item.description)
-        </span>
-        @if (Session["Permissions"] != null && int.Parse(Session["Permissions"].ToString()) == 3)
+@*
+        @foreach (var item in Model.adsList)
         {
-            <span style="float:right;display:block;margin-top:5px" class="Back_button">
-                @Html.ActionLink("Redaguoti", "EditAdvertisement", "Home", new { id = item.Id }, null)
-            </span>
-            <br /><br />
-            <span style="float:right;display:block" class="Back_button">
-                @Html.ActionLink("Ištrinti", "DeleteAdvertisement", "Home", new { id = item.Id }, null)
-            </span>
-        }
-    </div>
 
-}
+            <div style="border:1px solid black;margin-left:10px;margin-right:10px; width:700px;display:inline-block;clear:both">
+                <span class="advertisement-image">
+
+                    <img src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(item.image))" alt="Image" height="160px" width="160px" />
+
+                </span>
+                <span class="advertisement-author">
+                    Skelbimo autorius: @Html.ActionLink(item.author, "Details", "User", new { id = item.author_id }, null)
+                </span>
+                <span class="advertisement-category">
+                    Kategorija: @Html.DisplayFor(x => item.category)
+                </span>
+                <span style="display:inline-block; text-align:right;float:right;margin-right:10px">
+                    Įkėlimo data: @Html.DisplayFor(x => item.dateCreated)
+                </span>
+
+                <h3 style="text-align:center">@Html.DisplayFor(x => item.name)</h3>
+                <span style="margin:5px;display:inline-block">
+                    @Html.DisplayFor(x => item.description)
+                </span>
+                @if (Session["Permissions"] != null && int.Parse(Session["Permissions"].ToString()) == 3)
+                {
+                    <span style="float:right;display:block;margin-top:5px" class="Back_button">
+                        @Html.ActionLink("Redaguoti", "Edit", "Advertisement", new { id = item.Id }, null)
+                    </span>
+                    <br /><br />
+                    <span style="float:right;display:block" class="Back_button">
+                        @Html.ActionLink("Ištrinti", "Delete", "Advertisement", new { id = item.Id }, null)
+                    </span>
+                }
+            </div>
+
+        }
+
+    <table class="table table-bordered table-striped" style="border:2px solid blue">*@
+<table class="table table-striped">
+    <thead style="border-bottom: thin solid gray;margin-bottom:10px">
+    <th style="width:150px">Autorius</th>
+    <th style="width:300px;text-align:center">Skebimas</th>
+    <th style="width:120px">Kategorija</th>
+    <th style="width:150px">Įkėlimo data</th>
+    @if (Session["Permissions"] != null && int.Parse(Session["Permissions"].ToString()) > 1)
+    {
+        <th>Redaguoti</th>
+        <th>Ištrinti</th>
+    }
+   
+    </thead>
+
+
+    <tbody>
+        @foreach (var item in Model.adsList)
+        {
+            <tr style="border-bottom: thin solid gray">
+                <td>@Html.ActionLink(item.author, "details", "User", new {id = item.author_id}, null)</td>
+                <td style="text-align:center">
+                    <strong>@Html.ActionLink(item.name, "Details", "Advertisement", new {id = item.Id}, null)</strong><br />
+                    @Html.Raw(item.description.Length > 35 ? item.description.Substring(0, 35)+"<text>...</text>" : item.description)
+                </td>
+                <td>@Html.DisplayFor(x => item.category)</td>
+                <td>@Html.DisplayFor(x => item.dateCreated)</td>
+
+                @if (Session["Permissions"] != null && int.Parse(Session["Permissions"].ToString()) > 1)
+                {
+                    <td>
+                        <span style="display:inline-block" class="Back_button">
+                            @Html.ActionLink("Redaguoti", "Edit", "Advertisement", new { id = item.Id }, null)
+                        </span>
+                    </td>                   
+                    <td>
+                        <span style="display:inline-block" class="Back_button" >
+                            @Html.ActionLink("Ištrinti", "Delete", "Advertisement", new { id = item.Id }, null)
+                        </span>
+                    </td>
+                }
+
+            </tr>
+        }
+
+    </tbody>
+
+
+</table>
+
+
+
+
 
 <br />
 Page @(Model.adsList.PageCount < Model.adsList.PageNumber ? 0 : Model.adsList.PageNumber) of @Model.adsList.PageCount
@@ -104,11 +160,25 @@ Page @(Model.adsList.PageCount < Model.adsList.PageNumber ? 0 : Model.adsList.Pa
         $("#categoryFilter").val("0");
         $("#descriptionFilter").val("");
         $("#filterForm").submit();
+        /*var form = $('#filterForm');
+        $.ajax({
+            cache: false,
+            async: true,
+            type: "POST",
+            url: form.attr('action'),
+            data: form.serialize(),
+            success: function (data) {
+                alert(data);
+            }
+        });*/
 
     }
     $(document).ready(function () {
         $("#categoryFilter").val(@ViewBag.categoryFilter);
     });
+
+
+
 
 
 </script>

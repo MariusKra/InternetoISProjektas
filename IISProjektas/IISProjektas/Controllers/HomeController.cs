@@ -84,7 +84,7 @@ namespace IISProjektas.Controllers
             ViewBag.categoryDropDownList = listas;
 
 
-            int pageSize = 7;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
 
             model.adsList = list.ToPagedList(pageNumber, pageSize);
@@ -114,7 +114,7 @@ namespace IISProjektas.Controllers
                 list.Add(mod);
             }
 
-            int pageSize = 7;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
 
 
@@ -134,7 +134,6 @@ namespace IISProjektas.Controllers
 
         public ActionResult Create()
         {
-
             AdvertisementCreateModel model = new AdvertisementCreateModel()
             {
                 categoryDropDown = db.Categories.ToList().Select(z => new SelectListItem()
@@ -174,18 +173,21 @@ namespace IISProjektas.Controllers
                     model.Image.SaveAs(path);
                     ad.Image = path;
                 }
+
                 Response.Cookies.Add(new HttpCookie("AdCreated") { Value = "1", Expires = DateTime.Now.AddSeconds(15) });
 
-
-                db.Advertisements.Add(ad);
-                db.SaveChanges();
-
+                if (model.Image != null)
+                {
+                    db.Advertisements.Add(ad);
+                    db.SaveChanges();
+                }
+                
                 return RedirectToAction("MyAds", "Home");
             }
 
             Response.Cookies.Add(new HttpCookie("AdCreated") { Value = "2", Expires = DateTime.Now.AddSeconds(15) });
 
-            return RedirectToAction("MyAds", "Home");
+            return RedirectToAction("Create", "Home");
         }
 
     }

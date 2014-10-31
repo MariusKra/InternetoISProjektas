@@ -104,8 +104,8 @@ namespace IISProjektas.Controllers
                 email = user.email,                
                 state = user.state,
                 username = user.username,
-                password = user.password,
-                oldPassword = user.password,
+                //password = user.password,
+                //oldPassword = user.password,
                 permissions = db.User_UserGroup.Where(z => z.user_id == user.Id).FirstOrDefault().UserGroup.Id,
                 stateDropDown = db.UserStates.ToList()
                 .Select(z => new SelectListItem()
@@ -136,7 +136,7 @@ namespace IISProjektas.Controllers
             {
                 User user = db.Users.Find(model.Id);
                 user.email = model.email;
-                user.password = model.password;
+                //user.password = model.password;
                 user.state = model.state;
                 User_UserGroup group = db.User_UserGroup.Where(x => x.user_id == model.Id).FirstOrDefault();
                 group.UserGroup = db.UserGroups.Where(x => x.Id == model.permissions).FirstOrDefault();
@@ -185,8 +185,9 @@ namespace IISProjektas.Controllers
                
                     if (db.Users.Any(x => x.username.Equals(U.username)))
                     {
-                        ViewBag.Error = "Vartotojas tokiu vardu jau egzistuoja";
+                        //ViewBag.Error = "Vartotojas tokiu vardu jau egzistuoja";
                         U = null;
+                        ModelState.AddModelError("", "Vartotojas tokiu vardu jau egzistuoja");
                         return View(U);
                     }
                     User user = new User()
@@ -232,7 +233,7 @@ namespace IISProjektas.Controllers
             {
                 
                     
-                     var v = db.Users.Where(a => a.username.Equals(model.username) && a.password.Equals(model.password)).FirstOrDefault();
+                     var v = db.Users.Where(a => a.username.Equals(model.username) && a.password.Equals(model.password) && a.state != 3).FirstOrDefault();
                 if (v != null)
                 {
                     Session["LogedUserID"] = v.Id.ToString();
@@ -241,7 +242,11 @@ namespace IISProjektas.Controllers
                     Session["Permissions"] = (int)db.UserGroups.Where(y => y.Id == tmp.UserGroup.Id).FirstOrDefault().Id;
                     return RedirectToAction("Index","Home");
                 }
-                     
+                else
+                {
+                    ModelState.AddModelError("", "Vartotojas ištrintas");
+                    return View(model);
+                }
                 
 
                 
@@ -249,7 +254,7 @@ namespace IISProjektas.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            ModelState.AddModelError("", "The user name or password provided is incorrect.");
+            ModelState.AddModelError("", "Vartotojas su tokiu slaptažodžiu neegzistuoja.");
             return View(model);
         }
 
@@ -268,28 +273,24 @@ namespace IISProjektas.Controllers
 
 
 
-                    if (v != null && v.password == model.password)
+                    if (v != null)
                     {
                         v.email = model.email;
-                        v.password = model.newPassword != null ? model.newPassword : model.password;
+                        //v.password = model.newPassword != null ? model.newPassword : model.password;
                        
                         db.Entry(v).State = EntityState.Modified;
                    
                         db.SaveChanges();
 
                         model.username = v.username;
-                        model.newPassword = "";
-                        model.password = "";
-                        model.confirmNewPassword = "";
+                        //model.newPassword = "";
+                        //model.password = "";
+                        //model.confirmNewPassword = "";
                         ViewBag.Message = "Duomenys sėkmingai atnaujinti";
                         return View(model);
 
                     }
-                    else
-                    {
-                        ViewBag.Error = "Neteisingas buvęs slaptažodis";
-                        return View(model);
-                    }
+                    
                 }
                 else
                 {
@@ -301,8 +302,8 @@ namespace IISProjektas.Controllers
                         {
                             Id = v.Id,
                             username = v.username,
-                            email = v.email   ,
-                            oldPassword = v.password
+                            email = v.email   
+                            //oldPassword = v.password
 
                         };
 
@@ -329,11 +330,17 @@ namespace IISProjektas.Controllers
         // POST: /User/Delete/5
 
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             User user = db.Users.Find(id);
-            db.Users.Remove(user);
+            user.state = 3;
+            db.Entry(user).State = EntityState.Modified;
+            List<Advertisement> ads = db.Advertisements.Where(x => x.user_id == user.Id).ToList();
+            foreach (Advertisement ad in ads)
+            {
+                db.Advertisements.Remove(ad);
+            }
+
             db.SaveChanges();
             return RedirectToAction("Index");
         }
