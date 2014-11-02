@@ -15,14 +15,26 @@
     <div style="color:green;font-size:large">
         @ViewBag.Message
         @Html.ActionLink("Prisijungti", "Login", "User");
-
+      
     </div>
-    
+
+    <ol>
+        <li>
+            @Html.LabelFor(x => x.username)
+            @Html.DisplayFor(m => m.username)
+           
+        </li>
+
+        <li>
+            @Html.LabelFor(x => x.email)
+            @Html.DisplayFor(x => x.email)           
+        </li>
+       
+    </ol>
+
 }
-
-
-
-@using (Html.BeginForm())
+else { 
+using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
@@ -61,7 +73,7 @@
         </span>
     </fieldset>
 }
-
+}
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

@@ -17,7 +17,9 @@ namespace IISProjektas
         public int Id { get; set; }
         public int rating1 { get; set; }
         public int advertisement_id { get; set; }
+        public Nullable<int> user { get; set; }
     
         public virtual Advertisement Advertisement { get; set; }
+        public virtual User User1 { get; set; }
     }
 }

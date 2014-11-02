@@ -32,7 +32,7 @@ namespace IISProjektas.Models
         [Display(Name = "AdImage", ResourceType = typeof(IISProjektas.Resources))]
         public HttpPostedFileBase Image { get; set; }
 
-        public byte[] image { get; set; }
+        public byte[] imageBytes { get; set; }
 
         public IEnumerable<SelectListItem> categoryDropDown { get; set; }
         

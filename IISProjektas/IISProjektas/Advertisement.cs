@@ -16,8 +16,8 @@ namespace IISProjektas
     {
         public Advertisement()
         {
-            this.Comments = new HashSet<Comment>();
             this.Ratings = new HashSet<Rating>();
+            this.Comments = new HashSet<Comment>();
         }
     
         public int Id { get; set; }
@@ -30,7 +30,7 @@ namespace IISProjektas
     
         public virtual Category Category { get; set; }
         public virtual User User { get; set; }
-        public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Rating> Ratings { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

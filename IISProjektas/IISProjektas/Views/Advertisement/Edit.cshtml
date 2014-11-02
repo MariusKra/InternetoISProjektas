@@ -1,20 +1,18 @@
-﻿@model IISProjektas.Advertisement
+﻿@model IISProjektas.Models.AdvertisementEditModel
 
 @{
     ViewBag.Title = "Redaguoti skelbimą";
 }
 
-<h2>Edit</h2>
+<h2>Redaguoti</h2>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm("Edit", "Advertisement", FormMethod.Post, new { @id = "editAdvertisement", @enctype = "multipart/form-data" }))
+{
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Advertisement</legend>
-
-        @Html.HiddenFor(model => model.Id)
-
+        <legend>Skelbimas</legend>
         <div class="editor-label">
             @Html.LabelFor(model => model.name)
         </div>
@@ -22,40 +20,61 @@
             @Html.EditorFor(model => model.name)
             @Html.ValidationMessageFor(model => model.name)
         </div>
-
         <div class="editor-label">
             @Html.LabelFor(model => model.description)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.description)
+            @Html.TextAreaFor(model => model.description, new { style = "height:270px;width:500px" })
             @Html.ValidationMessageFor(model => model.description)
         </div>
-
         <div class="editor-label">
-            @Html.LabelFor(model => model.category_id, "Category")
+            @Html.LabelFor(x => x.category_id)
         </div>
         <div class="editor-field">
-            @Html.DropDownList("category_id", String.Empty)
+            @Html.DropDownListFor(model => model.category_id, new SelectList(Model.categoryDropDown, "Value", "Text"), new { @class = "dropDown" })
             @Html.ValidationMessageFor(model => model.category_id)
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.user_id, "User")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("user_id", String.Empty)
-            @Html.ValidationMessageFor(model => model.user_id)
+        <div class="image-container" >
+            <h3>Esamas paveiksliukas:</h3><br />
+            <img src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(Model.imageBytes))" alt="Image" height="240px" width="240px" />
         </div>
 
-        <p>
-            <input type="submit" value="Save" />
-        </p>
+        <div class="editor-label" style="clear:both">
+            <h3>Pakeisti paveiksliuką į:</h3>
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Image, new { type = "file" })
+            @Html.ValidationMessageFor(model => model.Image)
+        </div>
+
+
+        <div style="clear:both;padding-top:30px">
+
+            <input type="submit" value="Išsaugoti" />
+
+            @if (Session["CurrentPage"].ToString() == "MyAds")
+            {
+                <span class="Back_button">
+                    @Html.ActionLink("Grįžti atgal", "MyAds", "Home")
+                </span>
+            }
+            @if (Session["CurrentPage"].ToString() == "Index")
+            {
+                <span class="Back_button">
+                    @Html.ActionLink("Grįžti atgal", "Index", "Home")
+                </span>
+            }
+
+
+        </div>
+
+
+        @Html.HiddenFor(x => x.Id)
+
     </fieldset>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

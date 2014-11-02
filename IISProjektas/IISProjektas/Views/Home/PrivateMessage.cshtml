@@ -1,0 +1,112 @@
+﻿@{
+    ViewBag.Title = "PrivateMessage";
+}
+
+@model IISProjektas.Models.MessageListModel
+
+<h2>Susirašinėjimas su: @Html.DisplayFor(x => x.receiver)</h2>
+
+<div id="messagesWrapper">
+    @foreach (var item in Model.messages)
+    {
+        <div class="message-wrap" id="@item.Id">
+            <div class="comment-date">
+                @Html.DisplayFor(x => item.sent_date)
+            </div>
+
+            <div class="message-text">
+                @Html.DisplayFor(x => item.text)
+            </div>
+            @if (Session["LogedUserID"] != null && int.Parse(Session["Permissions"].ToString()) > 1)
+            {
+                <button style="margin-left:5px;float:left" onclick="DeleteComment(@item.Id)">Ištrinti</button>
+            }
+            <div class="message-sender">
+                @Html.DisplayFor(x => item.senderName)
+            </div>
+
+
+            <div style="clear:both"></div>
+        </div>
+    }
+</div>
+@if (Session["LogedUserID"] != null)
+{
+    <div class="message-wrap">
+
+        @using (Html.BeginForm("SavePrivateMessage", "Home", FormMethod.Post, new { id = "writeMessage", style = "width:350px" }))
+        {
+
+            @Html.TextArea("MessageText", new { style = "width:340px;height:100px;float:left" })
+            @Html.HiddenFor(x => x.Id)
+        }
+        <button style="float:left;margin-top:45px;margin-left:20px;" onclick="sendMessage()">Siųsti žinutę</button>
+
+
+    </div>
+
+}
+
+
+
+
+<script type="text/javascript">
+    function sendMessage() {
+        if ($("#commentText").val() != "") {
+            var time;
+            var form = $('#writeMessage');
+            $.ajax({
+                cache: false,
+                async: true,
+                type: "POST",
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: function (data) {
+                    var i = $(".username")[0]
+                    var user = i.textContent;
+                    var html = "<div class='message-wrap'>" +
+                         "<div class='comment-date'>" + data + "</div>" +
+                            "<div class='message-text'>" +
+                                $("#MessageText").val() +
+                            "</div>" +
+                            "<div class='message-sender'>" +
+                                user +
+                            "</div>" +
+                            "<div style='clear:both'></div>" +
+                        "</div>  ";
+
+
+                    $('#messagesWrapper').append(
+                        html);
+                    $("#MessageText").val("")
+                }
+            });
+
+
+        }
+    }
+
+    function DeleteComment(id) {
+
+        var result = confirm("Ištrinti šią žinutę?");
+        if (result == true) {
+
+            var form = $('#form' + id);
+            $.ajax({
+                type: "POST",
+                url: "/Home/DeleteMessage",
+                data: { Id: id },
+                datatype: "html",
+                success: function (data) {
+
+                    var field = document.getElementById(data);
+                    field.style.display = 'none';
+
+                }
+            });
+        }
+    }
+
+
+
+</script>

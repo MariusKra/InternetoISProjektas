@@ -9,40 +9,10 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Comments">
-      <EntityTypeMapping TypeName="SQLiteDatabase.Comment">
-        <MappingFragment StoreEntitySet="Comment">
-          <ScalarProperty Name="user_id" ColumnName="user_id" />
-          <ScalarProperty Name="advertisement_id" ColumnName="advertisement_id" />
-          <ScalarProperty Name="text" ColumnName="text" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Messages">
-      <EntityTypeMapping TypeName="SQLiteDatabase.Message">
-        <MappingFragment StoreEntitySet="Message">
-          <ScalarProperty Name="receiver_id" ColumnName="receiver_id" />
-          <ScalarProperty Name="sender_id" ColumnName="sender_id" />
-          <ScalarProperty Name="state" ColumnName="state" />
-          <ScalarProperty Name="text" ColumnName="text" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="MessageStates">
       <EntityTypeMapping TypeName="SQLiteDatabase.MessageState">
         <MappingFragment StoreEntitySet="MessageState">
           <ScalarProperty Name="name" ColumnName="name" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Ratings">
-      <EntityTypeMapping TypeName="SQLiteDatabase.Rating">
-        <MappingFragment StoreEntitySet="Rating">
-          <ScalarProperty Name="advertisement_id" ColumnName="advertisement_id" />
-          <ScalarProperty Name="rating1" ColumnName="rating" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -93,6 +63,39 @@
           <ScalarProperty Name="category_id" ColumnName="category_id" />
           <ScalarProperty Name="description" ColumnName="description" />
           <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Ratings">
+      <EntityTypeMapping TypeName="SQLiteDatabase.Rating">
+        <MappingFragment StoreEntitySet="Rating">
+          <ScalarProperty Name="user" ColumnName="user" />
+          <ScalarProperty Name="advertisement_id" ColumnName="advertisement_id" />
+          <ScalarProperty Name="rating1" ColumnName="rating" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Comments">
+      <EntityTypeMapping TypeName="SQLiteDatabase.Comment">
+        <MappingFragment StoreEntitySet="Comment">
+          <ScalarProperty Name="date_created" ColumnName="date_created" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="advertisement_id" ColumnName="advertisement_id" />
+          <ScalarProperty Name="text" ColumnName="text" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Messages">
+      <EntityTypeMapping TypeName="SQLiteDatabase.Message">
+        <MappingFragment StoreEntitySet="Message">
+          <ScalarProperty Name="date_sent" ColumnName="date_sent" />
+          <ScalarProperty Name="receiver_id" ColumnName="receiver_id" />
+          <ScalarProperty Name="sender_id" ColumnName="sender_id" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="text" ColumnName="text" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>

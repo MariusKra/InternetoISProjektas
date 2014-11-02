@@ -92,7 +92,7 @@
             @Html.LabelFor(model => model.description)
         </div>
         <div class="editor-field">
-            @Html.TextAreaFor(model => model.description)
+            @Html.TextAreaFor(model => model.description, new { style = "height:270px;width:500px" })
             @Html.ValidationMessageFor(model => model.description)
         </div>
         <div class="editor-label">

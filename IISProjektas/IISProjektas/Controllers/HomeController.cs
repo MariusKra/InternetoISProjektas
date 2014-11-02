@@ -7,6 +7,7 @@ using IISProjektas.Models;
 using System.IO;
 using PagedList;
 using PagedList.Mvc;
+using System.Data;
 
 namespace IISProjektas.Controllers
 {
@@ -88,7 +89,9 @@ namespace IISProjektas.Controllers
             int pageNumber = (page ?? 1);
 
             model.adsList = list.ToPagedList(pageNumber, pageSize);
-            
+
+            Session["CurrentPage"] = "Index";
+
             return View(model);
         }
 
@@ -117,20 +120,141 @@ namespace IISProjektas.Controllers
             int pageSize = 10;
             int pageNumber = (page ?? 1);
 
-
-            return View(list.ToPagedList(pageNumber, pageSize));
-
-
+            Session["CurrentPage"] = "MyAds";
+            return View(list.ToPagedList(pageNumber, pageSize));           
 
             return View();
         }
 
         public ActionResult Messages()
         {
-            ViewBag.Message = "Your contact page.";
+            MessageUsersListModel model = new MessageUsersListModel()
+            {
+                MessagesRecipients = new List<MessageReceiverModel>()
+            };
+            int currentUserId = int.Parse(Session["LogedUserID"].ToString());
+            List<Message> userMessages = db.Messages.Where(x => x.sender_id == currentUserId || x.receiver_id == currentUserId).ToList();
 
-            return View();
+
+            foreach (User usr in db.Users)
+            {
+                List<Message> mes = userMessages.Where(x => (x.sender_id == usr.Id || x.receiver_id == usr.Id) && x.MessageState.Id == 1).ToList();
+
+                if (userMessages.Where(x => x.sender_id == usr.Id || x.receiver_id == usr.Id).ToList().Count > 0 && usr.Id != currentUserId)
+                {
+                    model.MessagesRecipients.Add(new MessageReceiverModel()
+                    {
+                        Id = usr.Id,
+                        receiver = usr.username,
+                        isNew = mes.Count > 0 ? true : false
+
+                    });
+                }               
+            }
+            
+            return View(model);
         }
+
+        public ActionResult PrivateMessage(int Id)
+        {
+            int currentUserId = int.Parse(Session["LogedUserID"].ToString());
+            List<Message> messages = db.Messages
+                .Where(x => x.sender_id == Id && x.receiver_id == currentUserId || 
+                    x.receiver_id == Id && x.sender_id == currentUserId).ToList();
+
+            List<MessageModel> messageModel = messages.Select(y => new MessageModel()
+                {
+                    Id = y.Id,
+                    receiver_id = y.receiver_id,
+                    sender_id = y.sender_id,
+                    text = y.text,
+                    state = y.state,
+                    sent_date = ((DateTime)y.date_sent).ToString("yyyy-MM-dd"),
+                    senderName = y.User1.username
+                }).ToList();
+
+            MessageListModel model = new MessageListModel()
+            {
+                receiver = db.Users.Find(Id).username,                
+                Id = Id,                
+                messages = messageModel
+            };
+
+            for (int i = 0; i < messages.Count; i++ )
+            {
+                messages[i].state = 2;
+                db.Entry(messages[i]).State = EntityState.Modified;
+
+            }
+            db.SaveChanges();
+
+
+            return View(model);
+        }
+
+
+        public ActionResult WriteMessage(int Id)
+        {
+            MessageModel msg = new MessageModel()
+            {
+                sender_id = int.Parse(Session["LogedUserID"].ToString()),
+                receiver_id = Id,
+                text = "",
+                state = 1
+
+            };
+
+            ViewBag.username = db.Users.Find(Id).username;
+
+            return View(msg);
+        }
+
+        public ActionResult SaveMessage(MessageModel model)
+        {
+            Message message = new Message()
+            {
+                sender_id = model.sender_id,
+                receiver_id = model.receiver_id,
+                text = model.text,
+                state = model.state,
+                date_sent = DateTime.Now
+            };
+
+
+            db.Messages.Add(message);
+            db.SaveChanges();
+            Response.Cookies.Add(new HttpCookie("MessageSent") { Value = "1", Expires = DateTime.Now.AddSeconds(15) });
+
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult SavePrivateMessage(string MessageText, int Id)
+        {
+            Message message = new Message()
+            {
+                sender_id = int.Parse(Session["LogedUserID"].ToString()),
+                receiver_id = Id,
+                text = MessageText,
+                state = 1,
+                date_sent = DateTime.Now
+
+            };
+            db.Messages.Add(message);
+            db.SaveChanges();
+
+            return Json(((DateTime)message.date_sent).ToString("yyyy-MM-dd"));
+
+        }
+
+        public ActionResult DeleteMessage(int Id)
+        {
+            db.Messages.Remove(db.Messages.Find(Id));
+            db.SaveChanges();
+
+            return Json(Id);
+        }
+
 
         public ActionResult Create()
         {
@@ -189,6 +313,8 @@ namespace IISProjektas.Controllers
 
             return RedirectToAction("Create", "Home");
         }
+
+        
 
     }
 }

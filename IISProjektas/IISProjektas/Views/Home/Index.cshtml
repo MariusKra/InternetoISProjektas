@@ -8,7 +8,14 @@
 
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
-
+@if (Request.Cookies["MessageSent"] != null && Request.Cookies["MessageSent"].Value == "1")
+    {
+<h3 style="color:green">
+    Žinutė sėkmingai išsiųsta
+    <script type="text/javascript"> alert("Žinutė sėkmingai išsiųsta")</script>
+</h3>
+<br />
+    }
 <h2> Filtras</h2>
 @using (Html.BeginForm(null, null, FormMethod.Get, new { id = "filterForm" }))
 {
@@ -98,7 +105,7 @@
 <table class="table table-striped">
     <thead style="border-bottom: thin solid gray;margin-bottom:10px">
     <th style="width:150px">Autorius</th>
-    <th style="width:300px;text-align:center">Skebimas</th>
+    <th style="width:300px;text-align:center">Skelbimas</th>
     <th style="width:120px">Kategorija</th>
     <th style="width:150px">Įkėlimo data</th>
     @if (Session["Permissions"] != null && int.Parse(Session["Permissions"].ToString()) > 1)
@@ -130,7 +137,7 @@
                         </span>
                     </td>                   
                     <td>
-                        <span style="display:inline-block" class="Back_button" >
+                        <span style="display:inline-block" class="Back_button">
                             @Html.ActionLink("Ištrinti", "Delete", "Advertisement", new { id = item.Id }, null)
                         </span>
                     </td>
@@ -173,6 +180,12 @@ Page @(Model.adsList.PageCount < Model.adsList.PageNumber ? 0 : Model.adsList.Pa
         });*/
 
     }
+
+    
+
+
+    
+
     $(document).ready(function () {
         $("#categoryFilter").val(@ViewBag.categoryFilter);
     });

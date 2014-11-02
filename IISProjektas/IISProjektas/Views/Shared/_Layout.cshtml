@@ -24,7 +24,7 @@
                             @if (Session["Permissions"] != null)
                             {
                                 <li>@Html.ActionLink("Mano skelbimai", "MyAds", "Home")</li>
-                                <li>@Html.ActionLink("Pranešimai", "Messages", "Home")</li>
+                                <li>@Html.ActionLink("Žinutės", "Messages", "Home")</li>
                             if (int.Parse(Session["Permissions"].ToString()) > 1)
                             {
                                 <li>@Html.ActionLink("Vartotojai", "Index", "User")</li>

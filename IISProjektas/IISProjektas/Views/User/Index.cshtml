@@ -44,10 +44,14 @@
                 @Html.ActionLink("Redaguoti", "Edit", new { id = item.Id })
             </td>
 
-            @if (Session["Permissions"] != null && int.Parse(Session["Permissions"].ToString()) > 2)
+            @if (Session["Permissions"] != null && int.Parse(Session["Permissions"].ToString()) > 2 && int.Parse(Session["LogedUserID"].ToString()) != item.Id)
             {
-                
+
                 <td>@Html.ActionLink("Ištrinti", "Delete", new { id = item.Id })</td>
+            }
+            else
+            {
+                <td></td>
             }
         </tr>
 

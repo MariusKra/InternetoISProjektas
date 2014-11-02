@@ -1,43 +1,224 @@
-﻿@model IISProjektas.Advertisement
+﻿@model IISProjektas.Models.AdvertisementModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Skelbimo informacija";
 }
+<div style="display:block;float:right;text-align:center;font-size:large;">
+    Skelbimo vertinimas: <br />
+    <span id="commentRating">
+        @Html.DisplayFor(x => x.commentRating)
+    </span><br />
+    @if (Session["LogedUserID"] != null && !Model.isRated) { 
+    <div id="rateField" style="position:absolute">
+        @using (Html.BeginForm("RateAdvertisement", "Advertisement", FormMethod.Post, new { @id = "rateAd" }))
+        {
+            <span>Vertinti skelbimą:</span><br />
+            @Html.DropDownListFor(x => x.commentDropDown, new SelectList(ViewBag.commentDropDownList, "Value", "Text"))
+            @Html.HiddenFor(x => x.Id)
+        }
+        <button onclick="submitRate()">Vertinti</button>
+    </div>
+    }
+</div>
 
-<h2>Details</h2>
 
-<fieldset>
-    <legend>Advertisement</legend>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.name)
+<h2 style="text-align:center">Skelbimo informacija</h2>
+
+<fieldset style="min-height:500px">
+    <legend>Skelbimas</legend>
+
+
+    <br />
+    <br />
+    <div style="display:inline;text-align:center;">
+        <h2>@Html.DisplayFor(model => model.name)</h2>
     </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.name)
+    <div style="position:absolute;display:block">
+        <div class="image-container">
+            <img src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(Model.image))" alt="Image" height="240px" width="240px" />
+        </div>
+        <br>
+        <div style="font-size:large;  ">
+            Įkėlimo data:<br />
+            @Html.DisplayFor(x => x.dateCreated)<br />
+
+        </div>
+        <br />
+        <div style="font-size:large;">
+            Kategorija<br />
+            @Html.DisplayFor(x => x.category)
+        </div>
+    </div>
+    <div style="margin-left:270px">
+        <div style="font-size:large; display:block; float:left; margin-top:30px;">
+            @Html.DisplayFor(model => model.description)
+        </div>
+
+
+        <div style="clear:both;padding-top:30px">
+
+            @if (Session["LogedUserID"] != null)
+            {
+                if (int.Parse(Session["LogedUserID"].ToString()) == Model.author_id || int.Parse(Session["Permissions"].ToString()) > 1)
+                {
+                    <span class="Back_button">
+                        @Html.ActionLink("Redaguoti skelbimą", "Edit", new { id = Model.Id })
+                    </span>
+
+                    <span style="display:inline-block" class="Back_button">
+                        @Html.ActionLink("Ištrinti", "Delete", "Advertisement", new { id = Model.Id }, null)
+                    </span>
+                }
+            }
+            @if (Session["CurrentPage"].ToString() == "MyAds")
+            {
+                <span class="Back_button">
+                    @Html.ActionLink("Grįžti atgal", "MyAds", "Home")
+                </span>
+            }
+            @if (Session["CurrentPage"].ToString() == "Index")
+            {
+                <span class="Back_button">
+                    @Html.ActionLink("Grįžti atgal", "Index", "Home")
+                </span>
+            }
+
+
+
+        </div>
+        <h2> Skelbimo komentarai </h2>
+        <br />
+
+        <div id="messagesWrapper">
+            @foreach (var item in Model.comments)
+            {
+                <div class="message-wrap" id="@item.CommentId">
+                    <div class="comment-date">
+                        @Html.DisplayFor(x => item.date_created)
+                    </div>
+
+                    <div class="message-text">
+                        @Html.DisplayFor(x => item.text)
+                    </div>
+                    @if (Session["LogedUserID"] != null && int.Parse(Session["Permissions"].ToString()) > 1)
+                    {
+                        <button style="margin-left:5px;float:left" onclick="DeleteComment(@item.CommentId)">Ištrinti</button>
+                    }
+                    <div class="message-sender">
+                        @Html.DisplayFor(x => item.username)
+                    </div>
+                    
+
+                    <div style="clear:both"></div>
+                </div>
+            }
+        </div>
+        @if (Session["LogedUserID"] != null)
+        {
+            <div class="message-wrap">
+
+                @using (Html.BeginForm("WriteComment", "Advertisement", FormMethod.Post, new { id = "writeComment", style = "width:350px" }))
+                {
+
+                    @Html.TextArea("commentText", new { style = "width:340px;height:100px;float:left" })
+                    @Html.HiddenFor(x => x.Id)
+                }
+                <button style="float:left;margin-top:45px;margin-left:20px;" onclick="sendMessage()">Komentuoti</button>
+
+
+            </div>
+
+        }
+
+
     </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.description)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.description)
-    </div>
+    @Html.HiddenFor(x => x.Id)
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Category.name)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Category.name)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.User.username)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.User.username)
-    </div>
 </fieldset>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+   
+
+
+
+<script type="text/javascript">
+
+    function submitRate() {
+        var form = $('#rateAd');
+        $.ajax({
+            cache: false,
+            async: true,
+            type: "POST",
+            url: form.attr('action'),
+            data: form.serialize(),
+            success: function (data) {
+                var it = document.getElementById("commentRating")
+                it.textContent = data;
+
+            }
+        });
+        var field = document.getElementById("rateField");
+        field.style.display = 'none';
+
+    }
+
+    function sendMessage() {
+        if ($("#commentText").val() != "") {
+            var time;
+            var form = $('#writeComment');
+            $.ajax({
+                cache: false,
+                async: true,
+                type: "POST",
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: function (data) {
+                    var i = $(".username")[0]
+                    var user = i.textContent;
+                    var html = "<div class='message-wrap'>" +
+                         "<div class='comment-date'>" + data + "</div>" +
+                            "<div class='message-text'>" +
+                                $("#commentText").val() +
+                            "</div>" +
+                            "<div class='message-sender'>" +
+                                user +
+                            "</div>" +
+                            "<div style='clear:both'></div>" +
+                        "</div>  ";
+
+
+                    $('#messagesWrapper').append(
+                        html);
+                    $("#commentText").val("")
+                }
+            });
+            
+            
+        }
+    }
+
+    function DeleteComment(id) {
+
+        var result = confirm("Ištrinti šį komentarą?");
+        if (result == true) {
+
+            var form = $('#form'+id);
+            $.ajax({
+                type: "POST",
+                url: "/Advertisement/DeleteComment",
+                data: { Id: id },
+                datatype: "html",
+                success: function (data) {
+                    
+                    var field = document.getElementById(data);
+                    field.style.display = 'none';
+
+                }
+            });
+        }
+    }
+
+
+</script>
+

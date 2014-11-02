@@ -1,43 +1,45 @@
 ﻿@model IISProjektas.User
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Vartotojo informacija";
 }
 
-<h2>Details</h2>
+<h2>Vartotojo informacija</h2>
 
 <fieldset>
-    <legend>User</legend>
+    <legend>Vartotojas</legend>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.username)
+    <div class="display-label" style="font-size:large;font-weight:700">
+        Vartotojo vardas
     </div>
-    <div class="display-field">
+    <div class="display-field" style="font-size:large;">
         @Html.DisplayFor(model => model.username)
     </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.email)
+    <div class="display-label" style="font-size:large;font-weight:700">
+        El. Paštas
     </div>
-    <div class="display-field">
+    <div class="display-field" style="font-size:large">
         @Html.DisplayFor(model => model.email)
     </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.password)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.password)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.UserState.name)
+    <div class="display-label" style="font-size:large;font-weight:700">
+        Vartotojo būsena.
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.UserState.name)
     </div>
 </fieldset>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<br /><br />
+
+<span class="Back_button">
+    @Html.ActionLink("Atgal", "Index", "Home")
+
+</span>
+@if (Session["LogedUserID"] != null && int.Parse(Session["LogedUserID"].ToString()) != Model.Id)
+{
+    <span class="Back_button">
+        @Html.ActionLink("Parašyti žinutę", "WriteMessage", "Home", new { Id = Model.Id }, null)
+    </span>
+}
+

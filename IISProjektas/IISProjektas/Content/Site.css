@@ -839,9 +839,7 @@ tr{
     text-align:right;
 }
 
-.advertisement-text{
-    font-size:large;
-}
+
 
 .ad-wrap{
     height:300px;
@@ -853,4 +851,55 @@ tr{
                                           
 }
 
+.image-container{
+    display:block;
+    float:left;
 
+}
+
+
+.message-wrap{
+    margin-top:5px;
+    width:600px;       
+    clear:both;
+    position:relative;
+}
+
+.message-text{
+    font-size:medium;
+    font-family:Verdana;
+    width:350px;
+    float:left;
+    /*display:block;*/
+    border:2px solid #fff;
+    border-radius:6px 4px 5px 6px;
+    height:auto;
+    background-color:#eeee91;
+}
+
+.message-sender{
+    margin-left:20px;
+    font-size:large;  
+    /*display:block;*/
+    float:left;
+    vertical-align: middle;    
+    font-weight:700;
+    
+}
+
+.comment-date{
+    font-size:large;
+}
+
+.Messaging-with-person{
+    font-size:large;
+    font-weight:700;
+    /*width:500px;
+    border: 2px solid #3e5667;
+    border-radius: 5px;*/
+}
+
+.red-wrap{
+    background-color:yellow;
+
+}

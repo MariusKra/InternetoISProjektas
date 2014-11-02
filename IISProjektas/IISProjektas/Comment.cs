@@ -18,8 +18,9 @@ namespace IISProjektas
         public string text { get; set; }
         public int advertisement_id { get; set; }
         public int user_id { get; set; }
+        public Nullable<System.DateTime> date_created { get; set; }
     
-        public virtual User User { get; set; }
         public virtual Advertisement Advertisement { get; set; }
+        public virtual User User { get; set; }
     }
 }

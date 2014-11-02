@@ -186,7 +186,7 @@ namespace IISProjektas.Controllers
                     if (db.Users.Any(x => x.username.Equals(U.username)))
                     {
                         //ViewBag.Error = "Vartotojas tokiu vardu jau egzistuoja";
-                        U = null;
+                        //U = null;
                         ModelState.AddModelError("", "Vartotojas tokiu vardu jau egzistuoja");
                         return View(U);
                     }
@@ -211,7 +211,7 @@ namespace IISProjektas.Controllers
                     db.User_UserGroup.Add(user_group);
                     db.SaveChanges();
                     ModelState.Clear();
-                    U = null;
+                    //U = null;
                     ViewBag.Message = "Registracija sėkminga";
                 
             }
@@ -233,7 +233,7 @@ namespace IISProjektas.Controllers
             {
                 
                     
-                     var v = db.Users.Where(a => a.username.Equals(model.username) && a.password.Equals(model.password) && a.state != 3).FirstOrDefault();
+                     var v = db.Users.Where(a => a.username.Equals(model.username) && a.password.Equals(model.password) && a.state != 3 && a.state != 2).FirstOrDefault();
                 if (v != null)
                 {
                     Session["LogedUserID"] = v.Id.ToString();
@@ -244,7 +244,7 @@ namespace IISProjektas.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Vartotojas ištrintas");
+                    ModelState.AddModelError("", "Vartotojas ištrintas arba užblokuotas");
                     return View(model);
                 }
                 
@@ -339,6 +339,13 @@ namespace IISProjektas.Controllers
             foreach (Advertisement ad in ads)
             {
                 db.Advertisements.Remove(ad);
+            }
+
+            List<Message> msg = db.Messages.Where(x => x.receiver_id == user.Id || x.sender_id == user.Id).ToList();
+
+            foreach (Message mess in msg)
+            {
+                db.Messages.Remove(mess);
             }
 
             db.SaveChanges();

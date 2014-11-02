@@ -221,6 +221,11 @@
     <Compile Include="Models\AdvertisementEditModel.cs" />
     <Compile Include="Models\AdvertisementFilterModel.cs" />
     <Compile Include="Models\AdvertisementModel.cs" />
+    <Compile Include="Models\CommentModel.cs" />
+    <Compile Include="Models\MessageListModel.cs" />
+    <Compile Include="Models\MessageModel.cs" />
+    <Compile Include="Models\MessageReceiverModel.cs" />
+    <Compile Include="Models\MessageUsersListModel.cs" />
     <Compile Include="Models\UserEditModel.cs" />
     <Compile Include="Models\UserLoginModel.cs" />
     <Compile Include="Models\UserModel.cs" />
@@ -416,6 +421,8 @@
     <Content Include="Views\Advertisement\Edit.cshtml" />
     <Content Include="Views\Advertisement\Delete.cshtml" />
     <Content Include="Views\Home\Create.cshtml" />
+    <Content Include="Views\Home\WriteMessage.cshtml" />
+    <Content Include="Views\Home\PrivateMessage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Images\" />

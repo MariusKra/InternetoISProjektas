@@ -4,7 +4,7 @@
     ViewBag.Title = "Vartotojo redagavimas";
 }
 
-<h2>Edit</h2>
+<h2>Redaguoti</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -19,7 +19,7 @@
             @Html.LabelFor(model => model.username)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.username)
+            @Html.DisplayFor(model => model.username)
             @Html.ValidationMessageFor(model => model.username)
         </div>
 

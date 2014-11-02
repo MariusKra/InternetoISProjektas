@@ -31,6 +31,13 @@ namespace IISProjektas.Models
        // public string image { get; set; }
         public byte[] image { get; set; }
 
+        public double commentRating { get; set; }
+
+        public int commentDropDown { get; set; }
+
+        public bool isRated { get; set; }
+
+        public IEnumerable<CommentModel> comments { get; set; }
 
     }
 }

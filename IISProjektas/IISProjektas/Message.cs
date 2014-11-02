@@ -19,6 +19,7 @@ namespace IISProjektas
         public int state { get; set; }
         public int sender_id { get; set; }
         public int receiver_id { get; set; }
+        public Nullable<System.DateTime> date_sent { get; set; }
     
         public virtual MessageState MessageState { get; set; }
         public virtual User User { get; set; }

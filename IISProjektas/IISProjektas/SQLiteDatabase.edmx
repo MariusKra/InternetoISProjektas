@@ -11,7 +11,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="description" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="description" Type="nvarchar" MaxLength="1000" Nullable="false" />
           <Property Name="category_id" Type="int" Nullable="false" />
           <Property Name="user_id" Type="int" Nullable="false" />
           <Property Name="Image" Type="nvarchar" MaxLength="100" />
@@ -32,6 +32,7 @@
           <Property Name="text" Type="nvarchar" MaxLength="2000" Nullable="false" />
           <Property Name="advertisement_id" Type="int" Nullable="false" />
           <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="date_created" Type="datetime" />
         </EntityType>
         <EntityType Name="Message">
           <Key>
@@ -42,6 +43,7 @@
           <Property Name="state" Type="int" Nullable="false" />
           <Property Name="sender_id" Type="int" Nullable="false" />
           <Property Name="receiver_id" Type="int" Nullable="false" />
+          <Property Name="date_sent" Type="datetime" />
         </EntityType>
         <EntityType Name="MessageState">
           <Key>
@@ -57,6 +59,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="rating" Type="int" Nullable="false" />
           <Property Name="advertisement_id" Type="int" Nullable="false" />
+          <Property Name="user" Type="int" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -211,6 +214,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="user_rating">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Rating" Type="Self.Rating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rating">
+              <PropertyRef Name="user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="UserGroup_User_UserGroup">
           <End Role="UserGroup" Type="Self.UserGroup" Multiplicity="1" />
           <End Role="User_UserGroup" Type="Self.User_UserGroup" Multiplicity="*" />
@@ -274,6 +289,10 @@
             <End Role="UserState" EntitySet="UserState" />
             <End Role="User" EntitySet="User" />
           </AssociationSet>
+          <AssociationSet Name="user_rating" Association="Self.user_rating">
+            <End Role="User" EntitySet="User" />
+            <End Role="Rating" EntitySet="Rating" />
+          </AssociationSet>
           <AssociationSet Name="UserGroup_User_UserGroup" Association="Self.UserGroup_User_UserGroup">
             <End Role="UserGroup" EntitySet="UserGroup" />
             <End Role="User_UserGroup" EntitySet="User_UserGroup" />
@@ -285,34 +304,15 @@
       <Schema Namespace="SQLiteDatabase" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true" >
           <EntitySet Name="Categories" EntityType="SQLiteDatabase.Category" />
-          <EntitySet Name="Comments" EntityType="SQLiteDatabase.Comment" />
-          <EntitySet Name="Messages" EntityType="SQLiteDatabase.Message" />
           <EntitySet Name="MessageStates" EntityType="SQLiteDatabase.MessageState" />
-          <EntitySet Name="Ratings" EntityType="SQLiteDatabase.Rating" />
           <EntitySet Name="User_UserGroup" EntityType="SQLiteDatabase.User_UserGroup" />
           <EntitySet Name="UserGroups" EntityType="SQLiteDatabase.UserGroup" />
           <EntitySet Name="UserStates" EntityType="SQLiteDatabase.UserState" />
-          <AssociationSet Name="FK_Message_MessageState" Association="SQLiteDatabase.FK_Message_MessageState">
-            <End Role="MessageState" EntitySet="MessageStates" />
-            <End Role="Message" EntitySet="Messages" />
-          </AssociationSet>
           <AssociationSet Name="UserGroup_User_UserGroup" Association="SQLiteDatabase.UserGroup_User_UserGroup">
             <End Role="UserGroup" EntitySet="UserGroups" />
             <End Role="User_UserGroup" EntitySet="User_UserGroup" />
           </AssociationSet>
           <EntitySet Name="Users" EntityType="SQLiteDatabase.User" />
-          <AssociationSet Name="FK_Comment_User" Association="SQLiteDatabase.FK_Comment_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Comment" EntitySet="Comments" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Message_UserReceiver" Association="SQLiteDatabase.FK_Message_UserReceiver">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Message" EntitySet="Messages" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Message_UserSender" Association="SQLiteDatabase.FK_Message_UserSender">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Message" EntitySet="Messages" />
-          </AssociationSet>
           <AssociationSet Name="FK_User_UserGroup_User" Association="SQLiteDatabase.FK_User_UserGroup_User">
             <End Role="User" EntitySet="Users" />
             <End Role="User_UserGroup" EntitySet="User_UserGroup" />
@@ -330,13 +330,36 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Advertisement" EntitySet="Advertisements" />
           </AssociationSet>
+          <EntitySet Name="Ratings" EntityType="SQLiteDatabase.Rating" />
+          <AssociationSet Name="FK_Rating_Advertisement" Association="SQLiteDatabase.FK_Rating_Advertisement">
+            <End Role="Advertisement" EntitySet="Advertisements" />
+            <End Role="Rating" EntitySet="Ratings" />
+          </AssociationSet>
+          <AssociationSet Name="user_rating" Association="SQLiteDatabase.user_rating">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Rating" EntitySet="Ratings" />
+          </AssociationSet>
+          <EntitySet Name="Comments" EntityType="SQLiteDatabase.Comment" />
           <AssociationSet Name="FK_Comment_Advertisement" Association="SQLiteDatabase.FK_Comment_Advertisement">
             <End Role="Advertisement" EntitySet="Advertisements" />
             <End Role="Comment" EntitySet="Comments" />
           </AssociationSet>
-          <AssociationSet Name="FK_Rating_Advertisement" Association="SQLiteDatabase.FK_Rating_Advertisement">
-            <End Role="Advertisement" EntitySet="Advertisements" />
-            <End Role="Rating" EntitySet="Ratings" />
+          <AssociationSet Name="FK_Comment_User" Association="SQLiteDatabase.FK_Comment_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <EntitySet Name="Messages" EntityType="SQLiteDatabase.Message" />
+          <AssociationSet Name="FK_Message_MessageState" Association="SQLiteDatabase.FK_Message_MessageState">
+            <End Role="MessageState" EntitySet="MessageStates" />
+            <End Role="Message" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Message_UserReceiver" Association="SQLiteDatabase.FK_Message_UserReceiver">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Message" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Message_UserSender" Association="SQLiteDatabase.FK_Message_UserSender">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Message" EntitySet="Messages" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Category">
@@ -347,30 +370,6 @@
           <Property Name="name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Advertisements" Relationship="SQLiteDatabase.FK_Advertisement_Category" FromRole="Category" ToRole="Advertisement" />
         </EntityType>
-        <EntityType Name="Comment">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="text" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="advertisement_id" Type="Int32" Nullable="false" />
-          <Property Name="user_id" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="User" Relationship="SQLiteDatabase.FK_Comment_User" FromRole="Comment" ToRole="User" />
-          <NavigationProperty Name="Advertisement" Relationship="SQLiteDatabase.FK_Comment_Advertisement" FromRole="Comment" ToRole="Advertisement" />
-        </EntityType>
-        <EntityType Name="Message">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="text" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="state" Type="Int32" Nullable="false" />
-          <Property Name="sender_id" Type="Int32" Nullable="false" />
-          <Property Name="receiver_id" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="MessageState" Relationship="SQLiteDatabase.FK_Message_MessageState" FromRole="Message" ToRole="MessageState" />
-          <NavigationProperty Name="User" Relationship="SQLiteDatabase.FK_Message_UserReceiver" FromRole="Message" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="SQLiteDatabase.FK_Message_UserSender" FromRole="Message" ToRole="User" />
-          </EntityType>
         <EntityType Name="MessageState">
           <Key>
             <PropertyRef Name="Id" />
@@ -378,15 +377,6 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Messages" Relationship="SQLiteDatabase.FK_Message_MessageState" FromRole="MessageState" ToRole="Message" />
-        </EntityType>
-        <EntityType Name="Rating">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="rating1" Type="Int32" Nullable="false" />
-          <Property Name="advertisement_id" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Advertisement" Relationship="SQLiteDatabase.FK_Rating_Advertisement" FromRole="Rating" ToRole="Advertisement" />
         </EntityType>
         <EntityType Name="User_UserGroup">
           <Key>
@@ -415,18 +405,6 @@
           <Property Name="name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Users" Relationship="SQLiteDatabase.FK_User_UserState" FromRole="UserState" ToRole="User" />
         </EntityType>
-        <Association Name="FK_Message_MessageState">
-          <End Type="SQLiteDatabase.MessageState" Role="MessageState" Multiplicity="1" />
-          <End Type="SQLiteDatabase.Message" Role="Message" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MessageState">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Message">
-              <PropertyRef Name="state" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="UserGroup_User_UserGroup">
           <End Type="SQLiteDatabase.UserGroup" Role="UserGroup" Multiplicity="1" />
           <End Type="SQLiteDatabase.User_UserGroup" Role="User_UserGroup" Multiplicity="*" />
@@ -448,49 +426,14 @@
           <Property Name="email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="state" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Comments" Relationship="SQLiteDatabase.FK_Comment_User" FromRole="User" ToRole="Comment" />
-          <NavigationProperty Name="Messages" Relationship="SQLiteDatabase.FK_Message_UserReceiver" FromRole="User" ToRole="Message" />
-          <NavigationProperty Name="Messages1" Relationship="SQLiteDatabase.FK_Message_UserSender" FromRole="User" ToRole="Message" />
           <NavigationProperty Name="User_UserGroup" Relationship="SQLiteDatabase.FK_User_UserGroup_User" FromRole="User" ToRole="User_UserGroup" />
           <NavigationProperty Name="UserState" Relationship="SQLiteDatabase.FK_User_UserState" FromRole="User" ToRole="UserState" />
           <NavigationProperty Name="Advertisements" Relationship="SQLiteDatabase.FK_Advertisement_User" FromRole="User" ToRole="Advertisement" />
+          <NavigationProperty Name="Ratings" Relationship="SQLiteDatabase.user_rating" FromRole="User" ToRole="Rating" />
+          <NavigationProperty Name="Comments" Relationship="SQLiteDatabase.FK_Comment_User" FromRole="User" ToRole="Comment" />
+          <NavigationProperty Name="Messages" Relationship="SQLiteDatabase.FK_Message_UserReceiver" FromRole="User" ToRole="Message" />
+          <NavigationProperty Name="Messages1" Relationship="SQLiteDatabase.FK_Message_UserSender" FromRole="User" ToRole="Message" />
         </EntityType>
-        <Association Name="FK_Comment_User">
-          <End Type="SQLiteDatabase.User" Role="User" Multiplicity="1" />
-          <End Type="SQLiteDatabase.Comment" Role="Comment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Comment">
-              <PropertyRef Name="user_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Message_UserReceiver">
-          <End Type="SQLiteDatabase.User" Role="User" Multiplicity="1" />
-          <End Type="SQLiteDatabase.Message" Role="Message" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Message">
-              <PropertyRef Name="receiver_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Message_UserSender">
-          <End Type="SQLiteDatabase.User" Role="User" Multiplicity="1" />
-          <End Type="SQLiteDatabase.Message" Role="Message" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Message">
-              <PropertyRef Name="sender_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_User_UserGroup_User">
           <End Type="SQLiteDatabase.User" Role="User" Multiplicity="1" />
           <End Type="SQLiteDatabase.User_UserGroup" Role="User_UserGroup" Multiplicity="*" />
@@ -521,15 +464,15 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="category_id" Type="Int32" Nullable="false" />
           <Property Name="user_id" Type="Int32" Nullable="false" />
           <Property Name="Image" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="date_created" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Category" Relationship="SQLiteDatabase.FK_Advertisement_Category" FromRole="Advertisement" ToRole="Category" />
           <NavigationProperty Name="User" Relationship="SQLiteDatabase.FK_Advertisement_User" FromRole="Advertisement" ToRole="User" />
-          <NavigationProperty Name="Comments" Relationship="SQLiteDatabase.FK_Comment_Advertisement" FromRole="Advertisement" ToRole="Comment" />
           <NavigationProperty Name="Ratings" Relationship="SQLiteDatabase.FK_Rating_Advertisement" FromRole="Advertisement" ToRole="Rating" />
+          <NavigationProperty Name="Comments" Relationship="SQLiteDatabase.FK_Comment_Advertisement" FromRole="Advertisement" ToRole="Comment" />
         </EntityType>
         <Association Name="FK_Advertisement_Category">
           <End Type="SQLiteDatabase.Category" Role="Category" Multiplicity="1" />
@@ -555,6 +498,53 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Rating">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="rating1" Type="Int32" Nullable="false" />
+          <Property Name="advertisement_id" Type="Int32" Nullable="false" />
+          <Property Name="user" Type="Int32" />
+          <NavigationProperty Name="Advertisement" Relationship="SQLiteDatabase.FK_Rating_Advertisement" FromRole="Rating" ToRole="Advertisement" />
+          <NavigationProperty Name="User1" Relationship="SQLiteDatabase.user_rating" FromRole="Rating" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Rating_Advertisement">
+          <End Type="SQLiteDatabase.Advertisement" Role="Advertisement" Multiplicity="1" />
+          <End Type="SQLiteDatabase.Rating" Role="Rating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Advertisement">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rating">
+              <PropertyRef Name="advertisement_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="user_rating">
+          <End Type="SQLiteDatabase.User" Role="User" Multiplicity="0..1" />
+          <End Type="SQLiteDatabase.Rating" Role="Rating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rating">
+              <PropertyRef Name="user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="text" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="advertisement_id" Type="Int32" Nullable="false" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="date_created" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Advertisement" Relationship="SQLiteDatabase.FK_Comment_Advertisement" FromRole="Comment" ToRole="Advertisement" />
+          <NavigationProperty Name="User" Relationship="SQLiteDatabase.FK_Comment_User" FromRole="Comment" ToRole="User" />
+        </EntityType>
         <Association Name="FK_Comment_Advertisement">
           <End Type="SQLiteDatabase.Advertisement" Role="Advertisement" Multiplicity="1" />
           <End Type="SQLiteDatabase.Comment" Role="Comment" Multiplicity="*" />
@@ -567,15 +557,65 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Rating_Advertisement">
-          <End Type="SQLiteDatabase.Advertisement" Role="Advertisement" Multiplicity="1" />
-          <End Type="SQLiteDatabase.Rating" Role="Rating" Multiplicity="*" />
+        <Association Name="FK_Comment_User">
+          <End Type="SQLiteDatabase.User" Role="User" Multiplicity="1" />
+          <End Type="SQLiteDatabase.Comment" Role="Comment" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Advertisement">
+            <Principal Role="User">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Rating">
-              <PropertyRef Name="advertisement_id" />
+            <Dependent Role="Comment">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="text" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="state" Type="Int32" Nullable="false" />
+          <Property Name="sender_id" Type="Int32" Nullable="false" />
+          <Property Name="receiver_id" Type="Int32" Nullable="false" />
+          <Property Name="date_sent" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="MessageState" Relationship="SQLiteDatabase.FK_Message_MessageState" FromRole="Message" ToRole="MessageState" />
+          <NavigationProperty Name="User" Relationship="SQLiteDatabase.FK_Message_UserReceiver" FromRole="Message" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="SQLiteDatabase.FK_Message_UserSender" FromRole="Message" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Message_MessageState">
+          <End Type="SQLiteDatabase.MessageState" Role="MessageState" Multiplicity="1" />
+          <End Type="SQLiteDatabase.Message" Role="Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageState">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Message">
+              <PropertyRef Name="state" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Message_UserReceiver">
+          <End Type="SQLiteDatabase.User" Role="User" Multiplicity="1" />
+          <End Type="SQLiteDatabase.Message" Role="Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Message">
+              <PropertyRef Name="receiver_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Message_UserSender">
+          <End Type="SQLiteDatabase.User" Role="User" Multiplicity="1" />
+          <End Type="SQLiteDatabase.Message" Role="Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Message">
+              <PropertyRef Name="sender_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -593,40 +633,10 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Comments">
-            <EntityTypeMapping TypeName="SQLiteDatabase.Comment">
-              <MappingFragment StoreEntitySet="Comment">
-                <ScalarProperty Name="user_id" ColumnName="user_id" />
-                <ScalarProperty Name="advertisement_id" ColumnName="advertisement_id" />
-                <ScalarProperty Name="text" ColumnName="text" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Messages">
-            <EntityTypeMapping TypeName="SQLiteDatabase.Message">
-              <MappingFragment StoreEntitySet="Message">
-                <ScalarProperty Name="receiver_id" ColumnName="receiver_id" />
-                <ScalarProperty Name="sender_id" ColumnName="sender_id" />
-                <ScalarProperty Name="state" ColumnName="state" />
-                <ScalarProperty Name="text" ColumnName="text" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="MessageStates">
             <EntityTypeMapping TypeName="SQLiteDatabase.MessageState">
               <MappingFragment StoreEntitySet="MessageState">
                 <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Ratings">
-            <EntityTypeMapping TypeName="SQLiteDatabase.Rating">
-              <MappingFragment StoreEntitySet="Rating">
-                <ScalarProperty Name="advertisement_id" ColumnName="advertisement_id" />
-                <ScalarProperty Name="rating1" ColumnName="rating" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -677,6 +687,39 @@
                 <ScalarProperty Name="category_id" ColumnName="category_id" />
                 <ScalarProperty Name="description" ColumnName="description" />
                 <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ratings">
+            <EntityTypeMapping TypeName="SQLiteDatabase.Rating">
+              <MappingFragment StoreEntitySet="Rating">
+                <ScalarProperty Name="user" ColumnName="user" />
+                <ScalarProperty Name="advertisement_id" ColumnName="advertisement_id" />
+                <ScalarProperty Name="rating1" ColumnName="rating" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="SQLiteDatabase.Comment">
+              <MappingFragment StoreEntitySet="Comment">
+                <ScalarProperty Name="date_created" ColumnName="date_created" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="advertisement_id" ColumnName="advertisement_id" />
+                <ScalarProperty Name="text" ColumnName="text" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Messages">
+            <EntityTypeMapping TypeName="SQLiteDatabase.Message">
+              <MappingFragment StoreEntitySet="Message">
+                <ScalarProperty Name="date_sent" ColumnName="date_sent" />
+                <ScalarProperty Name="receiver_id" ColumnName="receiver_id" />
+                <ScalarProperty Name="sender_id" ColumnName="sender_id" />
+                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="text" ColumnName="text" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

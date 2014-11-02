@@ -1,0 +1,41 @@
+﻿
+@model IISProjektas.Models.MessageModel
+
+@using (Html.BeginForm("SaveMessage", "Home", FormMethod.Post, new { @id = "writeMessage" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>žinutė</legend>
+        <h2>
+            Žinutė vartotojui: @ViewBag.username
+        </h2>
+
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.text, new { style = "height:270px;width:500px" })
+            @Html.ValidationMessageFor(model => model.text)
+        </div>
+      
+        <p>
+            <input type="submit" value="Siųsti" />
+
+            <span class="Back_button">
+                @Html.ActionLink("Atgal", "Details", "User", new { id = Model.Id })
+            </span>
+
+        </p>
+    </fieldset>
+    @Html.HiddenFor( x => x.state);
+    @Html.HiddenFor(x => x.receiver_id);
+    @Html.HiddenFor(x => x.sender_id);
+        
+    
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
