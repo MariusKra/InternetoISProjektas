@@ -291,6 +291,18 @@ namespace IISProjektas.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Advertisement advertisement = db.Advertisements.Find(id);
+            List<Rating> ratings = db.Ratings.Where(x => x.advertisement_id == advertisement.Id).ToList();
+            foreach (Rating r in ratings)
+            {
+                db.Ratings.Remove(r);
+            }
+            List<Comment> comments = db.Comments.Where(x => x.advertisement_id == advertisement.Id).ToList();
+            foreach (Comment c in comments)
+            {
+                db.Comments.Remove(c);
+            }
+
+
             db.Advertisements.Remove(advertisement);
             db.SaveChanges();
             if (Session["CurrentPage"].ToString() == "Index")

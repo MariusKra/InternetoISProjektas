@@ -58,7 +58,7 @@
             @Html.LabelFor(model => model.state)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.state, new SelectList(Model.stateDropDown, "Value", "Text"), new { @class = "dropDown" })
+            @Html.DropDownListFor(model => model.state, new SelectList(Model.stateDropDown.Where(x => x.Value != "3"), "Value", "Text"), new { @class = "dropDown" })
             @Html.ValidationMessageFor(model => model.state)
         </div>
 

@@ -335,10 +335,28 @@ namespace IISProjektas.Controllers
             User user = db.Users.Find(id);
             user.state = 3;
             db.Entry(user).State = EntityState.Modified;
+            List<Comment> c = db.Comments.Where(x => x.user_id == user.Id).ToList();
+            foreach (Comment com in c)
+            {
+                db.Comments.Remove(com);
+            }
             List<Advertisement> ads = db.Advertisements.Where(x => x.user_id == user.Id).ToList();
             foreach (Advertisement ad in ads)
             {
+                List<Comment> adComment = db.Comments.Where(x => x.advertisement_id == ad.Id).ToList();
+                foreach (Comment comment in adComment)
+                {
+                    db.Comments.Remove(comment);
+                }
+                List<Rating> rates = db.Ratings.Where(x => x.advertisement_id == ad.Id).ToList();
+                foreach (Rating r in rates)
+                {
+                    db.Ratings.Remove(r);
+                }
+
                 db.Advertisements.Remove(ad);
+                
+
             }
 
             List<Message> msg = db.Messages.Where(x => x.receiver_id == user.Id || x.sender_id == user.Id).ToList();
@@ -347,6 +365,8 @@ namespace IISProjektas.Controllers
             {
                 db.Messages.Remove(mess);
             }
+
+           
 
             db.SaveChanges();
             return RedirectToAction("Index");

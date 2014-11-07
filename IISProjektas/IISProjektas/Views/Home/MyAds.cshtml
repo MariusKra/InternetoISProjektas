@@ -69,7 +69,7 @@
                 <td>@Html.DisplayFor(x => item.category)</td>
                 <td>@Html.DisplayFor(x => item.dateCreated)</td>
 
-                @if (Session["Permissions"] != null && int.Parse(Session["Permissions"].ToString()) > 1)
+                @if (Session["Permissions"] != null && (int.Parse(Session["Permissions"].ToString()) > 1 ||  int.Parse(Session["LogedUserID"].ToString()) == item.author_id))
                 {
                     <td>
                         <span style="display:inline-block" class="Back_button">
